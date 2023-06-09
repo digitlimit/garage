@@ -6,7 +6,7 @@ use App\Models\Vehicle;
 uses(RefreshDatabase::class);
 beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 
-it('create vehicle with model', function () 
+it('can create vehicle with model', function () 
 {
     $inputs = [
         'make'  => fake()->name(),

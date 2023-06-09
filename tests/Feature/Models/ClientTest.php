@@ -6,7 +6,7 @@ use App\Models\Client;
 uses(RefreshDatabase::class);
 beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 
-it('create client with model', function () 
+it('can create client with model', function () 
 {
     $inputs = [
         'name'  => fake()->name(),

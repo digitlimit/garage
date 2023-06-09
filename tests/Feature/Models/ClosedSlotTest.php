@@ -7,7 +7,7 @@ use Carbon\Carbon;
 uses(RefreshDatabase::class);
 beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 
-it('create closedslot with model', function () 
+it('can create closedslot with model', function () 
 {
     $inputs = [
         'slot_start' => Carbon::now(),

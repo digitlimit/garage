@@ -7,7 +7,7 @@ use Carbon\Carbon;
 uses(RefreshDatabase::class);
 beforeEach(fn () => $this->seed(DatabaseSeeder::class));
 
-it('create booking with model', function () 
+it('can create booking with model', function () 
 {
     $inputs = [
         'client_id'  => 1,
