@@ -1,7 +1,20 @@
 <?php
 
-test('example', function () {
-    $response = $this->get('/');
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Vehicle;
 
-    $response->assertStatus(200);
-});
+uses(RefreshDatabase::class);
+beforeEach(fn () => $this->seed(DatabaseSeeder::class));
+
+it('create vehicle with model', function () 
+{
+    $inputs = [
+        'make'  => fake()->name(),
+        'model' => fake()->name(),
+    ];
+
+    Vehicle::create($inputs);
+
+    $this->assertDatabaseHas('vehicles', $inputs);
+
+})->group('vehicle', 'vehicle-model');

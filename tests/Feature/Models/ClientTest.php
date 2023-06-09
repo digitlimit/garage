@@ -1,7 +1,21 @@
 <?php
 
-test('example', function () {
-    $response = $this->get('/');
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Models\Client;
 
-    $response->assertStatus(200);
-});
+uses(RefreshDatabase::class);
+beforeEach(fn () => $this->seed(DatabaseSeeder::class));
+
+it('create client with model', function () 
+{
+    $inputs = [
+        'name'  => fake()->name(),
+        'email' => fake()->email(),
+        'phone' => fake()->phoneNumber()
+    ];
+
+    Client::create($inputs);
+
+    $this->assertDatabaseHas('clients', $inputs);
+
+})->group('client', 'client-model');

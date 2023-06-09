@@ -20,4 +20,4 @@ it('create booking with model', function ()
 
     $this->assertDatabaseHas('bookings', $inputs);
 
-})->group('');
+})->group('booking', 'booking-model');
