@@ -11,8 +11,12 @@ use App\Repositories\Contracts\BookingRepository as RepositoryInterface;
 
 class BookingRepository implements RepositoryInterface
 {
-    public function __construct(private Model $model)
-    {}
+    public function __construct(
+        /**
+         * An instance of the booking eloquent model
+         */
+        private Model $model
+    ){}
 
    /**
      * Create new booking

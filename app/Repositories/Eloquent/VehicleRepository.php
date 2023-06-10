@@ -3,21 +3,32 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\Vehicle as Model;
+use App\Values\Vehicle;
 use App\Repositories\Contracts\VehicleRepository as RepositoryInterface;
 
 class VehicleRepository implements RepositoryInterface
 {
-    public function __construct(private Model $model)
-    {}
+    public function __construct(
+        /**
+         * An instance of the vehicle eloquent model
+         */
+        private Model $model
+    ){}
 
-    /**
-     * Find a vehicle with the given email or create one if doesn't exist
+   /**
+     * Find the given vehicle or create, if not exists
      * 
-     * @param  array $vehicle A array for vehicle
-     * @return int Returns the vehicle ID
+     * @param Vehicle $vehicle The vehicle value object
      */
-    public function firstOrCreate(array $vehicle) : int
+    public function firstOrCreate(Vehicle $vehicle) : int
     {
- 
+        $newVehicle = $this
+        ->model
+        ->firstOrCreate([
+            'make'  => $vehicle->getMake(),
+            'model' => $vehicle->getModel()
+        ]);
+
+        return $newVehicle->id;
     }
 }
