@@ -4,19 +4,28 @@ namespace App\Repositories\Contracts;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Carbon\CarbonInterface;
+use App\Values\BookingDate;
+use App\Values\BookingSorting;
 
 interface BookingRepository
 {
     /**
      * Create new booking
-     */
-    public function create(int $clientId, int $vehicleId, CarbonInterface $date) : int;
-
-    /**
-     * Fetch a paginated list of bookings.
      * 
-     * @param array $filters An optional array of filters
-     * @param int   $perPage The number of records per page, default 15
+     * @param int         $clientId  Client ID
+     * @param int         $vehicleId Vehicle ID
+     * @param BookingDate $date The booking date value object 
      */
-    public function list(array $filters=[], ?int $perPage=null): LengthAwarePaginator;
+    public function create(int $clientId, int $vehicleId, BookingDate $date) : int;
+
+    public function list(
+        BookingSorting  $sort,
+        int             $perPage=15
+    ): LengthAwarePaginator;
+
+    public function filterByDate(
+        CarbonInterface $date,
+        BookingSorting  $sort,
+        int             $perPage=15
+    ): LengthAwarePaginator;
 }
