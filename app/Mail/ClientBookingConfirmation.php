@@ -8,7 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Values\{Client, BookingDate};
+use App\Values\{Client, Vehicle, BookingDate};
 
 class ClientBookingConfirmation extends Mailable
 {
@@ -19,6 +19,7 @@ class ClientBookingConfirmation extends Mailable
      */
     public function __construct(
         readonly public Client      $client,
+        readonly public Vehicle     $vehicle,
         readonly public BookingDate $date
     ){}
 

@@ -8,20 +8,29 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Routing\UrlGenerator;
+
 use App\Values\{Client, Vehicle, BookingDate};
 
 class AdminBookingConfirmation extends Mailable
 {
     use Queueable, SerializesModels, ShouldQueue;
 
+    public string $url;
+
     /**
      * Create a new message instance.
      */
     public function __construct(
-        readonly public Client      $client,
-        readonly public Vehicle     $vehicle,
-        readonly public BookingDate $date
-    ){}
+        readonly private int          $bookingId,
+        readonly public  Client       $client,
+        readonly public  Vehicle      $vehicle,
+        readonly public  BookingDate  $date,
+        readonly private UrlGenerator $urlGenerator
+    ){
+        $this->url = $this->urlGenerator
+            ->route('bookings.view', $this->bookingId);
+    }
 
     /**
      * Get the message envelope.

@@ -37,7 +37,8 @@ Route::middleware('auth:sanctum')
     ->prefix('bookings')
     ->name('bookings.')
     ->group(function () {
-        Route::get('/',  'list')->name('list')->can('list', 'booking');
+        Route::get('/{booking}',  'view')->name('view')->can('view', 'booking');
+        Route::get('/',           'list')->name('list')->can('list', 'booking');
     });
 
     Route::controller(SlotController::class)
