@@ -93,9 +93,9 @@ class Booking extends Model
     }
 
     /**
-     * Scope a query to fetch upcoming bookings with related vehicle and client.
+     * Scope a query to fetch bookings with related vehicle and client.
      */
-    public function scopeUpcoming(Builder $query) : void 
+    public function scopeList(Builder $query) : void 
     {
         $query
         ->with('vehicle:id,make,model')

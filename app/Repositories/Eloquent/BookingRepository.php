@@ -38,22 +38,28 @@ class BookingRepository implements RepositoryInterface
     /**
      * Fetch a paginated collection of upcoming bookings.
      * 
-     * @param array  $filters        An optional array of filters
-     * @param int    $perPage        The number of records per page, default 15
-     * @param string $orderDirection Ordering direction ASC|DESC, default DESC
+     * @param BookingSorting $sort    Booking sorting value object
+     * @param int            $perPage The number of records per page, default 15
      */
     public function list(
         BookingSorting  $sort,
         int             $perPage=15
     ): LengthAwarePaginator {
-        
+
         return $this->model
         ->query()
-        ->upcoming()
+        ->list()
         ->orderBy($sort->getColumn(), $sort->getDirection())
         ->paginate($perPage);
     }
 
+    /**
+     * Filter booking by date
+     * 
+     * @param CarbonInterface $date    The date to filter to
+     * @param BookingSorting  $sort    Booking sorting value object
+     * @param int             $perPage The number of records per page, default 15
+     */
     public function filterByDate(
         CarbonInterface $date,
         BookingSorting  $sort,
@@ -62,7 +68,7 @@ class BookingRepository implements RepositoryInterface
 
         return $this->model
         ->query()
-        ->upcoming()
+        ->list()
         ->when($date, fn($query) => $query->whereDate('bookings.start', $date))
         ->orderBy($sort->getColumn(), $sort->getDirection())
         ->paginate($perPage);
