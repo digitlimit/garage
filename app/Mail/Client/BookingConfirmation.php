@@ -8,7 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Values\{Client, Vehicle, BookingDate};
+use App\Values\{Client, Vehicle};
+use DateTime;
 
 class BookingConfirmation extends Mailable
 {
@@ -16,7 +17,7 @@ class BookingConfirmation extends Mailable
 
     readonly public Client      $client;
     readonly public Vehicle     $vehicle;
-    readonly public BookingDate $date;
+    readonly public DateTime $date;
 
     /**
      * Set client
@@ -37,7 +38,7 @@ class BookingConfirmation extends Mailable
     /**
      * Set Booking Date
      */
-    public function setBookingDate(BookingDate $date) : void 
+    public function setBookingDate(DateTime $date) : void 
     {
         $this->date = $date;
     }

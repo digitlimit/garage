@@ -10,16 +10,18 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Routing\UrlGenerator;
 
-use App\Values\{Client, Vehicle, BookingDate};
+use App\Values\Client;
+use App\Values\Vehicle;
+use DateTime;
 
 class BookingConfirmation extends Mailable
 {
     use Queueable, SerializesModels, ShouldQueue;
 
-    readonly public  string       $url;
-    readonly public  Client       $client;
-    readonly public  Vehicle      $vehicle;
-    readonly public  BookingDate  $date;
+    readonly public  string   $url;
+    readonly public  Client   $client;
+    readonly public  Vehicle  $vehicle;
+    readonly public  DateTime $date;
 
     /**
      * Create a new message instance.
@@ -55,7 +57,7 @@ class BookingConfirmation extends Mailable
     /**
      * Set Booking Date
      */
-    public function setBookingDate(BookingDate $date) : void 
+    public function setBookingDate(DateTime $date) : void 
     {
         $this->date = $date;
     }

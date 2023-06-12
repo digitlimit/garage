@@ -5,7 +5,8 @@ namespace App\Services;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Config\Repository;
 use App\Mail\Admin\BookingConfirmation;
-use App\Values\{Client, Vehicle, BookingDate};
+use App\Values\{Client, Vehicle};
+use DateTime;
 
 class AdminEmailService
 {
@@ -30,10 +31,10 @@ class AdminEmailService
      * Send booking confirmation to admin
      */
     public function sendBookingConfirmation(
-        int         $bookingId,
-        Client      $client, 
-        Vehicle     $vehicle, 
-        BookingDate $date
+        int      $bookingId,
+        Client   $client, 
+        Vehicle  $vehicle, 
+        DateTime $date
     ) : void {
 
         $adminEmail = $this->config

@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Config\Repository;
 use App\Repositories\Contracts\{BookingRepository, ClientRepository, VehicleRepository};
 use App\Services\{ClientEmailService, AdminEmailService};
-use App\Values\{Client, Vehicle, BookingDate};
+use App\Values\Client;
+use App\Values\Vehicle;
+use DateTime;
 
 class BookingService
 {
@@ -27,9 +29,10 @@ class BookingService
      * @throws Exception
      */
     public function addNew(
-        Client      $client,
-        Vehicle     $vehicle,
-        BookingDate $bookingDate
+        int       $slotId,
+        Client    $client,
+        Vehicle   $vehicle,
+        DateTime $date
     ) : int|null {
 
         DB::beginTransaction();
@@ -51,14 +54,14 @@ class BookingService
         // attempt to create booking
         $bookingId = $this
             ->booking
-            ->create($clientId, $vehicleId, $bookingDate);
+            ->create($slotId, $clientId, $vehicleId, $date);
             
         DB::commit();
 
         // send emails to client and admin
         if($bookingId) {
-            $this->emailClient($client, $bookingDate);
-            $this->emailAdmin($bookingId, $client, $vehicle, $bookingDate);
+            $this->emailClient($client, $date);
+            $this->emailAdmin($bookingId, $client, $vehicle, $date);
         }
 
         return $bookingId;
@@ -67,22 +70,22 @@ class BookingService
     /**
      * Send booking confirmation email to the client
      */
-    public function emailClient(Client $client, BookingDate $bookingDate): void
+    public function emailClient(Client $client, DateTime $date): void
     {
         $this->clientEmail
-        ->sendBookingConfirmation($client, $bookingDate);
+        ->sendBookingConfirmation($client, $date);
     }
 
     /**
      * Send booking confirmation email to the admin
      */
     public function emailAdmin(
-        int         $bookingId, 
-        Client      $client, 
-        Vehicle     $vehicle, 
-        BookingDate $bookingDate
+        int      $bookingId, 
+        Client   $client, 
+        Vehicle  $vehicle, 
+        DateTime $date
     ): void {
         $this->adminEmail
-        ->sendBookingConfirmation($bookingId, $client, $vehicle, $bookingDate);
+        ->sendBookingConfirmation($bookingId, $client, $vehicle, $date);
     }
 }

@@ -5,9 +5,9 @@ namespace App\Repositories\Eloquent;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Carbon\CarbonInterface;
 use App\Models\Booking as Model;
-use App\Values\BookingDate;
 use App\Values\BookingSorting;
 use App\Repositories\Contracts\BookingRepository as RepositoryInterface;
+use DateTime;
 
 class BookingRepository implements RepositoryInterface
 {
@@ -21,19 +21,23 @@ class BookingRepository implements RepositoryInterface
    /**
      * Create new booking
      * 
-     * @param int         $clientId  Client ID
-     * @param int         $vehicleId Vehicle ID
-     * @param BookingDate $date The booking date value object 
+     * @param int      $clientId  Client ID
+     * @param int      $vehicleId Vehicle ID
+     * @param DateTime $date The booking date value object 
      */
-    public function create(int $clientId, int $vehicleId, BookingDate $date) : int
-    {
+    public function create(
+        int $slotId, 
+        int $clientId, 
+        int $vehicleId, 
+        DateTime $date
+    ) : int {
         $booking = $this
             ->model
             ->create([
                 'client_id'  => $clientId,
                 'vehicle_id' => $vehicleId,
-                'start'      => $date->getStart(),
-                'end'        => $date->getEnd()
+                'slot_id'    => $slotId,
+                'date'       => $date
             ]);
 
         return $booking->id;

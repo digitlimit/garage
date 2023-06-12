@@ -4,7 +4,8 @@ namespace App\Services;
 
 use Illuminate\Contracts\Mail\Mailer;
 use App\Mail\Client\BookingConfirmation;
-use App\Values\{Client, BookingDate};
+use App\Values\Client;
+use DateTime;
 
 class ClientEmailService
 {
@@ -23,11 +24,11 @@ class ClientEmailService
     /**
      * Send booking confirmation to Client
      */
-    public function sendBookingConfirmation(Client $client, BookingDate $date)
+    public function sendBookingConfirmation(Client $client, DateTime $date)
     {
 
         $this->mailable->setClient($client);
-        $this->mailable->setBookingDate($date);
+        $this->mailable->setDateTime($date);
 
         $this->mailer
             ->to($client->getEmail())
