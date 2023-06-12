@@ -9,7 +9,9 @@ use App\Repositories\Contracts\{BookingRepository, ClientRepository, VehicleRepo
 use App\Services\{ClientEmailService, AdminEmailService};
 use App\Values\Client;
 use App\Values\Vehicle;
+use App\Values\BookingSorting;
 use DateTime;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookingService
 {
@@ -21,6 +23,29 @@ class BookingService
         readonly private AdminEmailService  $adminEmail,
         readonly private Repository         $config
     ){}
+
+    public function find(int $bookingId)
+    {
+        return $this
+        ->booking
+        ->find($bookingId);
+    }
+
+    /**
+     * Fetch list of booking
+     */
+    public function list(
+        string $sortColumn, 
+        string $sortDirection, 
+        int    $perPage
+    ) : LengthAwarePaginator {
+
+        $sorting = new BookingSorting($sortColumn, $sortDirection);
+
+        return $this
+            ->booking
+            ->list($sorting, $perPage);
+    }
 
     /**
      * Create new booking record
@@ -60,32 +85,13 @@ class BookingService
 
         // send emails to client and admin
         if($bookingId) {
-            $this->emailClient($client, $date);
-            $this->emailAdmin($bookingId, $client, $vehicle, $date);
+            $this->clientEmail
+                ->sendBookingConfirmation($client, $date);
+
+            $this->adminEmail
+                ->sendBookingConfirmation($bookingId, $client, $vehicle, $date);
         }
 
         return $bookingId;
-    }
-
-    /**
-     * Send booking confirmation email to the client
-     */
-    public function emailClient(Client $client, DateTime $date): void
-    {
-        $this->clientEmail
-        ->sendBookingConfirmation($client, $date);
-    }
-
-    /**
-     * Send booking confirmation email to the admin
-     */
-    public function emailAdmin(
-        int      $bookingId, 
-        Client   $client, 
-        Vehicle  $vehicle, 
-        DateTime $date
-    ): void {
-        $this->adminEmail
-        ->sendBookingConfirmation($bookingId, $client, $vehicle, $date);
     }
 }

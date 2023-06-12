@@ -18,6 +18,16 @@ class BookingRepository implements RepositoryInterface
         private Model $model
     ){}
 
+    /**
+     * Fetch a booking by ID
+     */
+    public function find(int $bookingId) : mixed
+    {
+        return $this
+            ->model
+            ->find($bookingId);
+    }
+
    /**
      * Create new booking
      * 

@@ -9,13 +9,8 @@ use DateTime;
 
 interface BookingRepository
 {
-    /**
-     * Create new booking
-     * 
-     * @param int      $clientId  Client ID
-     * @param int      $vehicleId Vehicle ID
-     * @param DateTime $date The booking date 
-     */
+    public function find(int $bookingId) : mixed;
+
     public function create(
         int $slotId, 
         int $clientId, 
@@ -23,10 +18,7 @@ interface BookingRepository
         DateTime $date
     ) : int;
 
-    public function list(
-        BookingSorting  $sort,
-        int             $perPage=15
-    ): LengthAwarePaginator;
+    public function list(BookingSorting $sort,int $perPage=15): LengthAwarePaginator;
 
     public function filterByDate(
         CarbonInterface $date,
