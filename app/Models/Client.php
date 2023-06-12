@@ -10,9 +10,13 @@ class Client extends Model
     use HasFactory;
 
     /**
-     * The attributes that are not mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'name',
+        'phone',
+        'email'
+    ];
 }

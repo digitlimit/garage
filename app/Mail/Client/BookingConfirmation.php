@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Client;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -8,28 +8,38 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Routing\UrlGenerator;
-
 use App\Values\{Client, Vehicle, BookingDate};
 
-class AdminBookingConfirmation extends Mailable
+class BookingConfirmation extends Mailable
 {
     use Queueable, SerializesModels, ShouldQueue;
 
-    public string $url;
+    readonly public Client      $client;
+    readonly public Vehicle     $vehicle;
+    readonly public BookingDate $date;
 
     /**
-     * Create a new message instance.
+     * Set client
      */
-    public function __construct(
-        readonly private int          $bookingId,
-        readonly public  Client       $client,
-        readonly public  Vehicle      $vehicle,
-        readonly public  BookingDate  $date,
-        readonly private UrlGenerator $urlGenerator
-    ){
-        $this->url = $this->urlGenerator
-            ->route('bookings.view', $this->bookingId);
+    public function setClient(Client $client) : void 
+    {
+        $this->client = $client;
+    }
+
+    /**
+     * Set vehicle
+     */
+    public function setVehicle(Vehicle $vehicle) : void 
+    {
+        $this->vehicle = $vehicle;
+    }
+
+    /**
+     * Set Booking Date
+     */
+    public function setBookingDate(BookingDate $date) : void 
+    {
+        $this->date = $date;
     }
 
     /**
@@ -48,7 +58,7 @@ class AdminBookingConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.admin-booking-confirmation',
+            markdown: 'emails.client-booking-confirmation',
         );
     }
 

@@ -2,8 +2,12 @@
 
 namespace Database\Seeders;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\User;
+use App\Models\Client;
+use App\Models\Vehicle;
+use App\Models\Booking;
+use App\Models\Slot;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +16,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+        $this->call(SlotSeeder::class);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        User::factory()->create([
+            'name'  => 'Paul',
+            'email' => 'paul@garage.com'
+        ]);
+
+        $client = Client::factory()->create([
+           'name'  => 'Emeka Mbah',
+           'phone' => '07366713094',
+           'email' => 'frankemeks77@yahoo.com'
+        ]);
+
+        $vehicle = Vehicle::factory()->create([
+            'make'  => 'Honda',
+            'model' => '2023 Honda CR-V'
+        ]);
+
+        Booking::factory()->create([
+            'client_id'  => $client->id,
+            'vehicle_id' => $vehicle->id,
+            'slot_id'    => Slot::all(['id'])->random()->id
+        ]);
     }
 }

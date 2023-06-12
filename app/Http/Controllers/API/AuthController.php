@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use App\Http\Requests\Auth\LoginRequest;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     public function __construct(
         /**

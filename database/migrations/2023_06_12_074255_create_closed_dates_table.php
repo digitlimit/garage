@@ -11,12 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create('closed_dates', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->unsignedBigInteger('client_id');
-            $table->unsignedBigInteger('vehicle_id');
-            $table->unsignedBigInteger('slot_id');
             $table->timestamps();
         });
     }
@@ -26,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('closed_dates');
     }
 };

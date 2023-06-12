@@ -15,11 +15,16 @@ class Booking extends Model
     use HasFactory;
 
     /**
-     * The attributes that are not mass assignable.
+     * The attributes that are mass assignable.
      *
      * @var array<int, string>
      */
-    protected $guarded = ['id'];
+    protected $fillable = [
+        'client_id',
+        'vehicle_id',
+        'slot_id',
+        'date'
+    ];
 
     /**
      * The attributes that should be cast.
@@ -27,18 +32,7 @@ class Booking extends Model
      * @var array
      */
     protected $casts = [
-        'slot_start' => 'datetime:Y-m-d H:i:s',
-        'slot_end'   => 'datetime:Y-m-d H:i:s',
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'slot_start',
-        'slot_end'
+        'date' => 'datetime:Y-m-d'
     ];
 
     /**
@@ -60,27 +54,12 @@ class Booking extends Model
     }
 
     /**
-     * Interact with slot start time value.
-     *
-     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
+     * Get booking slot
+     * 
+     * @return BelongsTo
      */
-    protected function slotStart(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('H:i'),
-        );
-    }
-
-    /**
-     * Interact with slot end time value.
-     *
-     * @return  \Illuminate\Database\Eloquent\Casts\Attribute
-     */
-    protected function slotEnd(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => Carbon::parse($value)->format('H:i'),
-        );
+    public function slot() : BelongsTo {
+        return $this->belongsTo(Slot::class);
     }
 
     /**
@@ -89,7 +68,7 @@ class Booking extends Model
     public function scopeForDate(Builder $query, CarbonInterface $date) : void
     {
         $query
-        ->where('bookings.slot_start', $date);
+        ->where('bookings.date', $date);
     }
 
     /**

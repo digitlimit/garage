@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class ClosedSlot extends Model
+class ClosedDate extends Model
 {
     use HasFactory;
 
@@ -16,16 +15,16 @@ class ClosedSlot extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'slot_id',
         'date'
     ];
 
     /**
-     * Get booking slot
-     * 
-     * @return BelongsTo
+     * The attributes that should be cast.
+     *
+     * @var array
      */
-    public function slot() : BelongsTo {
-        return $this->belongsTo(Slot::class);
-    }
+    protected $casts = [
+        'date' => 'datetime:Y-m-d'
+    ];
+
 }
