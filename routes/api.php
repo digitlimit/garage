@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BookingController;
-use App\Http\Controllers\SlotController;
+use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\BookingController;
+use App\Http\Controllers\API\ClosedSlotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,12 +40,13 @@ Route::middleware('auth:sanctum')
         Route::get('/',           'list')->name('list')->can('list', 'booking');
     });
 
-    Route::controller(SlotController::class)
+    Route::controller(ClosedSlotController::class)
     ->prefix('slots')
     ->name('slots.')
     ->group(function () {
-        Route::post('/close', 'close')->name('close')->can('close', 'slot');
-        Route::post('/open',  'open')->name('open')->can('open', 'slot');
+        Route::get('/',           'list')->name('list')->can('list', 'slot');
+        Route::post('/block',     'block')->name('block')->can('block', 'slot');
+        Route::delete('/unblock', 'unblock')->name('unblock')->can('unblock', 'slot');
     });
 
 });
