@@ -92,6 +92,10 @@ export default {
       if (typeof error === 'function') error(e);
     } finally {
     }
+  },
+
+  axios() {
+    return axios;
   }
 };
 

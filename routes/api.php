@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')
     ->prefix('auth')
     ->name('auth.')
     ->group(function () {
+        Route::get('/user',    'user')->name('user');
         Route::post('/logout', 'logout')->name('logout');
     });
 

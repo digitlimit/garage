@@ -5,6 +5,10 @@ export default {
             .getAttribute('content');
     },
 
+    siteBaseUrl() {
+        return window.location.origin;
+    },
+
     isUrl(string) {
         let url;
         try {

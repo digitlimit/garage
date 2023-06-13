@@ -23,6 +23,14 @@ class AuthController extends BaseController
     ) {}
 
     /**
+     * Fetch the auth user
+     */
+    public function user(Request $request): Response
+    {
+        return $request->user();
+    }
+
+    /**
      * Handle an incoming authentication request.
      */
     public function login(LoginRequest $request): Response
