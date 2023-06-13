@@ -6,12 +6,11 @@
 </x-mail::panel>
 
 <x-mail::table>
-| Client Name   | {{$client->getName()}}  |
-| Client Phone  | {{$client->getName()}}  |
-| Client Email  | {{$client->getName()}}  |
-| Vehicle Make  | {{$vehicle->getName()}} |
-| Vehicle Model | {{$vehicle->getName()}} |
-
+| Client Name   | {{$client->getName()}}   |
+| Client Phone  | {{$client->getPhone()}}  |
+| Client Email  | {{$client->getEmail()}}  |
+| Vehicle Make  | {{$vehicle->getMake()}}  |
+| Vehicle Model | {{$vehicle->getModel()}} |
 </x-mail::table>
 
 <x-mail::button :url="$url">

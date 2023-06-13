@@ -9,7 +9,7 @@ axios.interceptors.response.use( function (response) {
 },
 
 function (error)
-{ 
+{ console.log(error);
   const { response } = error;
   const { data }     = response;
 
@@ -19,7 +19,7 @@ function (error)
   switch(response.status) 
   {
     case 422:
-      errors  = helper.getValidationErrors(data.errors);
+      errors  = helper.errors(data.errors);
       message = data.message;
       break;
 

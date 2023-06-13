@@ -25,6 +25,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\VehicleRepository::class, 
             \App\Repositories\Eloquent\VehicleRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\SlotRepository::class, 
+            \App\Repositories\Eloquent\SlotRepository::class
+        );
     }
 
     /**

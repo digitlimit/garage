@@ -4,7 +4,7 @@ import API from '@/Shared/Helpers/API';
 
 const storeId = 'login';
 
-export const useLoginStore = defineStore(storeId, () => {
+export const useLogin = defineStore(storeId, () => {
 
     // states
     let loading  = ref(false);

@@ -1,7 +1,7 @@
 export default {
 
     apiBaseUrl() {
-        return  document.querySelector('meta[name="base-url"]')
+        return  document.querySelector('meta[name="api-url"]')
             .getAttribute('content');
     },
 
@@ -25,7 +25,7 @@ export default {
         });
     },
 
-    validationErrors(errors) {
+    errors(errors) {
         let newErrors = {};
         for(let input in errors){
             newErrors[input] = errors[input][0];
@@ -33,7 +33,7 @@ export default {
         return newErrors;
     },
 
-    responseData(res) {
+    response(res) {
         let data = null;
         if(res.data && res.data.success){
             data = res.data.data ? res.data.data : res.data;

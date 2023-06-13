@@ -35,7 +35,7 @@ class SlotHelper
             $endTime   = $chunk[1];
 
             $slots[] = [
-                'name'       => "$startTime - $endTime",
+                'name'       => $startTime->format('H:i') . ' - ' . $endTime->format('H:i'),
                 'start_time' => $startTime,
                 'end_time'   => $endTime,
             ]; 

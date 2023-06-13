@@ -7,14 +7,14 @@
           :id="id" 
           ref="input" 
           v-bind="{ ...$attrs, class: null }" 
-          class="appearance-none block w-full bg-gray-200 text-gray-700 border 
+          class="appearance-none block w-full text-gray-700 border 
           rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" 
           :class="{ error: error }" 
           :type="type" 
           :value="modelValue" 
           @input="$emit('update:modelValue', $event.target.value)"
         >
-        <p v-if="error" class="text-red-500 text-xs italic"> {{ error }}</p>
+        <p v-if="error" class="text-red-500 text-sm mt-1"> {{ error }}</p>
     </div>
   </template>
 

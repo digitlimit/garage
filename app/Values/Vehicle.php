@@ -14,6 +14,9 @@ readonly class Vehicle
     {
         $this->validateMake($make);
         $this->validateModel($model);
+        
+        $this->make  = $make;
+        $this->model = $model;
     }
 
     /**

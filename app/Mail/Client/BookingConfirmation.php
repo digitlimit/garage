@@ -11,12 +11,12 @@ use Illuminate\Queue\SerializesModels;
 use App\Values\{Client, Vehicle};
 use DateTime;
 
-class BookingConfirmation extends Mailable
+class BookingConfirmation extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels, ShouldQueue;
+    use Queueable, SerializesModels;
 
-    readonly public Client      $client;
-    readonly public Vehicle     $vehicle;
+    readonly public Client   $client;
+    readonly public Vehicle  $vehicle;
     readonly public DateTime $date;
 
     /**
@@ -59,7 +59,7 @@ class BookingConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.client-booking-confirmation',
+            markdown: 'emails.client.booking-confirmation',
         );
     }
 

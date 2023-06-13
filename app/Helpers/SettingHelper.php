@@ -11,6 +11,16 @@ class SettingHelper
     ){}
 
     /**
+     * Get all settings
+     */
+    public function all() : array
+    {
+        return $this
+        ->config
+        ->get("setting");
+    }
+
+    /**
      * Get setting value
      */
     public function get(string $key) : mixed

@@ -46,24 +46,24 @@ class BookingController extends BaseController
     {
         try {
             // only validated form inputs
-            $slotId = $request->validated('slot_id');
+            $slotId = $request->validated('slot');
             $name   = $request->validated('name');
             $email  = $request->validated('email');
             $phone  = $request->validated('phone');
             $model  = $request->validated('model');
             $make   = $request->validated('make');
             $date   = $request->date('date');
-
+            
             // value objects
             $client  = new Client($name, $phone, $email);
             $vehicle = new Vehicle($make, $model);
-            
+           
             $this->booking
                 ->addNew($slotId, $client, $vehicle, $date);
 
             return response()->noContent();
 
-        } catch(\Exception $e) {
+        } catch(\Exception $e) { dd($e);
             //@todo fix response
             return response()->json([
                 'error' => 'unable to creeate'

@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BookingController;
-use App\Http\Controllers\API\ClosedSlotController;
+use App\Http\Controllers\API\SlotController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,11 +16,14 @@ use App\Http\Controllers\API\ClosedSlotController;
 |
 */
 
-Route::post('/auth/login', [AuthController::class, 'login'])
+Route::post('/auth/login', [AuthController::class,    'login'])
 ->name('auth.login');
 
 Route::post('/bookings',   [BookingController::class, 'create'])
 ->name('bookings.create');
+
+Route::get('/slots',       [SlotController::class,    'list'])
+->name('slots.list');
 
 Route::middleware('auth:sanctum')
 ->group(function () 
@@ -36,15 +39,14 @@ Route::middleware('auth:sanctum')
     ->prefix('bookings')
     ->name('bookings.')
     ->group(function () {
-        Route::get('/{booking}',  'view')->name('view')->can('view', 'booking');
         Route::get('/',           'list')->name('list')->can('list', 'booking');
+        Route::get('/{booking}',  'view')->name('view')->can('view', 'booking');
     });
 
-    Route::controller(ClosedSlotController::class)
+    Route::controller(SlotController::class)
     ->prefix('slots')
     ->name('slots.')
     ->group(function () {
-        Route::get('/',           'list')->name('list')->can('list', 'slot');
         Route::post('/block',     'block')->name('block')->can('block', 'slot');
         Route::delete('/unblock', 'unblock')->name('unblock')->can('unblock', 'slot');
     });

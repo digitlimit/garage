@@ -14,9 +14,9 @@ use App\Values\Client;
 use App\Values\Vehicle;
 use DateTime;
 
-class BookingConfirmation extends Mailable
+class BookingConfirmation extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels, ShouldQueue;
+    use Queueable, SerializesModels;
 
     readonly public  string   $url;
     readonly public  Client   $client;
@@ -78,7 +78,7 @@ class BookingConfirmation extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.admin-booking-confirmation',
+            markdown: 'emails.admin.booking-confirmation',
         );
     }
 

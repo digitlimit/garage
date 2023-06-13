@@ -9,11 +9,9 @@ use Carbon\CarbonInterface;
 class BusinessDay
 {
     public function __construct(
-        readonly private CarbonInterface $startTime,
-        readonly private CarbonInterface $endTime,
+        readonly private CarbonInterface $date,
         readonly private string          $openingTime,
-        readonly private string          $oclosingTime,
-
+        readonly private string          $closingTime,
     ){}
 
     public function __invoke(Validator $validator): void
@@ -23,10 +21,10 @@ class BusinessDay
         // $minutes = $startTime->diffInMinutes($endTime);
 
         // if($startTime == $startTime || $minutes % $this->interval) {
-        //     $validator->errors()->add(
-        //         'start_time',
-        //         "SLots should be intervals of $this->interval"
-        //     );
+            // $validator->errors()->add(
+            //     'start_time',
+            //     "SLots should be intervals of $this->interval"
+            // );
         // }
     }
 }
