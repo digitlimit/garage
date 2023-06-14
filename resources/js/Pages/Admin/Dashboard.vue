@@ -10,9 +10,9 @@
 
   let bookings  = ref([]);
   let filters   = ref({
-        date: '',
-        order_direction: 'desc',
-        order_column   : 'date'
+        date           : '',
+        sort_direction : 'desc',
+        sort_column    : 'date'
   });
 
   onMounted( async () => { 
