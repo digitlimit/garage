@@ -15,11 +15,11 @@
     });
 
     // mounted
-    onMounted(() => {
-
+    onMounted(() => { 
+        authStore.reset();
     });
 
-    // create booking
+    // login user
     const onSubmit = async () => {
         authStore.login(creds);
     };
@@ -27,6 +27,14 @@
 </script>
 <template>
     <form class="md:space-y-6 space-y-4">
+        <div v-if="authStore.success" 
+            class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+            <span class="font-medium">Success!</span> {{ authStore.success }}
+        </div>
+        <div v-if="authStore.error" 
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">Opps!</span> {{ authStore.error }}
+        </div>
         <div>
             <TextInput v-model="creds.email" :error="authStore.errors.email" type="email" label="E-mail address" />
         </div>

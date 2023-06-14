@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Carbon\CarbonInterface;
+use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 
 class Slot extends Model
@@ -23,26 +24,6 @@ class Slot extends Model
         'start_time',
         'end_time'
     ];
-
-    // /**
-    //  * The attributes that should be cast.
-    //  *
-    //  * @var array
-    //  */
-    // protected $casts = [
-    //     'start_time' => 'datetime:H:i',
-    //     'end_time'   => 'datetime:H:i',
-    // ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    // protected $appends = [
-    //     'start_time',
-    //     'end_time'
-    // ];
 
     /**
      * Interact with session start time value.
@@ -69,26 +50,66 @@ class Slot extends Model
     }
 
     /**
+     * Scope a query to check if slot has booking
+     */
+    public function scopeHasBooking(
+        Builder         $query, 
+        int             $slotId, 
+        CarbonInterface $date
+    ) : void {
+        $query
+        ->leftJoin('bookings', 'slots.id', '=', 'bookings.slot_id')
+        ->whereDate('bookings.date', $date)
+        ->where('bookings.slot_id',  $slotId);
+    }
+
+    /**
+     * Scope a query to check if slot is closed
+     */
+    public function scopeIsClosed(
+        Builder         $query, 
+        int             $slotId, 
+        CarbonInterface $date
+    ) : void {
+        $query
+        ->leftJoin('closed_slots', 'slots.id', '=', 'closed_slots.slot_id')
+        ->whereDate('closed_slots.date', $date)
+        ->where('closed_slots.slot_id', $slotId);
+    }
+
+    /**
+     * Scope a query to check if date is closed
+     */
+    public function scopeDateIsClosed(
+        Builder         $query, 
+        CarbonInterface $date
+    ) : void {
+        $query
+        ->where(function (Query $query) use($date)
+        {
+            $query
+            ->select('date')
+            ->from('closed_dates')
+            ->whereDate('date', $date)
+            ->limit(1);
+        }, $date->toDateString());
+    }
+
+    /**
      * Scope a query to check if a slot is availble
      */
     public function scopeAvailability(Builder $query, int $slotId, CarbonInterface $date) : void
     {
         $query
-        ->leftJoin('bookings',     'slots.id', '=', 'bookings.slot_id')
+        ->leftJoin('bookings', 'slots.id', '=', 'bookings.slot_id')
         ->leftJoin('closed_slots', 'slots.id', '=', 'closed_slots.slot_id')
         ->where('slots.id', $slotId)
-        ->where(function(Builder $query) use($slotId, $date)
+        ->where(function(Builder $query) use ($slotId, $date)
         {
             $query
-            ->whereDate('bookings.date', $date)
-            ->where('bookings.slot_id',  $slotId);
-        })
-        ->orWhere(function(Builder $query) use($slotId, $date)
-        {
-            $query
-            ->where('closed_slots.date',    $date)
-            ->where('closed_slots.slot_id', $slotId);
+            ->where(  fn(Builder $query) => $query->hasBooking($slotId, $date))
+            ->orWhere(fn(Builder $query) => $query->isClosed($slotId, $date))
+            ->orWhere(fn(Builder $query) => $query->dateIsClosed($date));
         });
-        //@todo check the dates table
     }
 }

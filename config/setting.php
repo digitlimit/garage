@@ -4,10 +4,21 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Default Admin Password
+    | Admin Demo Email
     |--------------------------------------------------------------------------
     |
-    | This is the deafult admin password for demo purposes!
+    | This is the default admin email for demo purposes!
+    |
+    */
+
+    'demo_email' => env('DEMO_EMAIL'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Demo Password
+    |--------------------------------------------------------------------------
+    |
+    | This is the default admin password for demo purposes!
     |
     */
 

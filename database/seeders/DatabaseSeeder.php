@@ -8,9 +8,15 @@ use App\Models\Client;
 use App\Models\Vehicle;
 use App\Models\Booking;
 use App\Models\Slot;
+use App\Helpers\SettingHelper;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
+    public function __construct(
+        readonly private SettingHelper $setting
+    ){}
+
     /**
      * Seed the application's database.
      */
@@ -19,8 +25,10 @@ class DatabaseSeeder extends Seeder
         $this->call(SlotSeeder::class);
 
         User::factory()->create([
-            'name'  => 'Paul',
-            'email' => 'paul@garage.com'
+            'name'     => 'Paul',
+            'email'    => $this->setting->get('demo_email'),
+            'password' => Hash::make($this->setting->get('demo_password')),
+            'admin'    => true
         ]);
 
         $client = Client::factory()->create([

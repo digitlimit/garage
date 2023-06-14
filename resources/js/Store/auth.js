@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
+import Router from "@/routes";
 import API    from '@/Shared/Helpers/API';
 import Helper from '@/Shared/Helpers/Helper';
 
@@ -8,31 +9,28 @@ const storeId = 'auth';
 
 export const useAuth = defineStore(storeId, () => {
 
-    // states
     let errors   = ref([]);
     let loading  = ref(false);
     let complete = ref(false);
     let error    = ref('');
     let success  = ref('');
-    let authUser = ref(null);
-    let isAdmin  = ref(false);
-    let isAuth   = ref(false);
+    let user     = ref(null);
+    let loggedIn = ref(false);
 
-    async function user() 
+    // states
+    function reset()
     {
-        return await API
-            .post('/auth/user', {}, () => {
-                this.loading = false;
-                this.success = 'Welcome';
-            }, ({ message, errors }) => {
-                this.loading = false;
-                this.error   = message;
-                this.errors  = errors;
-            });
+        errors.value   = [];
+        loading.value  = false;
+        complete.value = false;
+        error.value    = '';
+        success.value  = '';
     }
 
     async function login(creds) 
     {
+        // this.reset();
+
         const params = creds.value;
         const axios  = API.axios();
 
@@ -45,18 +43,22 @@ export const useAuth = defineStore(storeId, () => {
 
             // attempt login
             axios.defaults.baseURL = Helper.apiBaseUrl();
-            const user = API
+
+            const userData = await API
             .post('/auth/login', params, () => {
-                this.loading = false;
-                this.success = 'Login was done.';
-
-                console.log(user, 77)
-
+                this.loading  = false;
             }, ({ message, errors }) => { 
                 this.loading = false;
                 this.error   = message;
                 this.errors  = errors;
             });
+
+            // log user in
+            if(userData.id) {
+                this.user     = userData;
+                this.loggedIn = true;
+                Router.push({ name: 'admin.dashboard' });
+            }
         });
     }
 
@@ -64,8 +66,12 @@ export const useAuth = defineStore(storeId, () => {
     {
         return await API
             .post('/auth/logout', {}, () => {
+                // log user out
                 this.loading = false;
-                this.success = 'Logout was done.';
+                this.user     = null;
+                this.loggedIn = false;
+
+                Router.push({ name: 'landing.index' })
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
@@ -79,12 +85,11 @@ export const useAuth = defineStore(storeId, () => {
         complete,
         error,
         success,
-        authUser,
-        isAdmin,
-        isAuth,
         user,
+        loggedIn,
         login,
-        logout
+        logout,
+        reset
     }
 
 }, {persist: {

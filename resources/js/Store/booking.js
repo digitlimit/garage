@@ -28,6 +28,20 @@ export const useBooking = defineStore(storeId, () => {
                 this.errors  = errors;
             });
     }
+
+    async function list(booking) 
+    {
+        const params = booking.value;
+
+        return await API
+            .get('/bookings', params, () => {
+                this.loading = false;
+            }, ({ message, errors }) => {
+                this.loading = false;
+                this.error   = message;
+                this.errors  = errors;
+            });
+    }
   
     return { 
         errors,
@@ -36,5 +50,6 @@ export const useBooking = defineStore(storeId, () => {
         error,
         success,
         createBooking,
+        list
     }
 });

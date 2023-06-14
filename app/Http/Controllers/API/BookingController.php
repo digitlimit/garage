@@ -63,7 +63,7 @@ class BookingController extends BaseController
 
             return response()->noContent();
 
-        } catch(\Exception $e) { dd($e);
+        } catch(\Exception $e) {
             //@todo fix response
             return response()->json([
                 'error' => 'unable to creeate'

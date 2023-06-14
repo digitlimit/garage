@@ -39,7 +39,7 @@ class CreateRequest extends FormRequest
             'make'  => ['required', 'min:3', 'max:80'],
             'model' => ['required', 'min:3', 'max:80'],
             'date'  => ['required', 'date:"Y-m-d"', 'after:yesterday'],
-            'slot'  => ['required', 'exists:slots,id']
+            'slot'  => ['required', 'integer']
         ];
     }
 

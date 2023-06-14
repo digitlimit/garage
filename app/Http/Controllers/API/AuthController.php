@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Factory;
 use Illuminate\Contracts\Routing\ResponseFactory;
 use App\Http\Requests\Auth\LoginRequest;
@@ -33,13 +34,13 @@ class AuthController extends BaseController
     /**
      * Handle an incoming authentication request.
      */
-    public function login(LoginRequest $request): Response
+    public function login(LoginRequest $request): JsonResponse
     {
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return $this->response->noContent();
+        return $this->response->json($request->user());
     }
 
     /**
