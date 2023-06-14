@@ -2,8 +2,8 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\Client as Model;
 use App\Values\Client;
+use App\Models\Client as Model;
 use App\Repositories\Contracts\ClientRepository as RepositoryInterface;
 
 class ClientRepository implements RepositoryInterface

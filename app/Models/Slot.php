@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as Query;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\DB;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
 
@@ -98,8 +99,11 @@ class Slot extends Model
     /**
      * Scope a query to check if a slot is availble
      */
-    public function scopeAvailability(Builder $query, int $slotId, CarbonInterface $date) : void
-    {
+    public function scopeAvailability(
+        Builder         $query, 
+        int             $slotId, 
+        CarbonInterface $date
+    ) : void {
         $query
         ->leftJoin('bookings', 'slots.id', '=', 'bookings.slot_id')
         ->leftJoin('closed_slots', 'slots.id', '=', 'closed_slots.slot_id')
@@ -111,5 +115,20 @@ class Slot extends Model
             ->orWhere(fn(Builder $query) => $query->isClosed($slotId, $date))
             ->orWhere(fn(Builder $query) => $query->dateIsClosed($date));
         });
+    }
+
+    /**
+     * Fetch all the slots that closed as from today
+     */
+    public function scopeAsFromDate(
+        Builder         $query,
+        CarbonInterface $date
+    ) : void {
+
+        $query
+        ->leftJoin('bookings', 'slots.id', '=', 'bookings.slot_id')
+        ->leftJoin('closed_slots', 'slots.id', '=', 'closed_slots.slot_id')
+        ->whereDate('bookings.date',       '>=', $date)
+        ->orWhereDate('closed_slots.date', '>=', $date);
     }
 }

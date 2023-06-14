@@ -2,15 +2,23 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Values\Client;
+use App\Values\Vehicle;
+use App\Helpers\LogHelper;
+use Carbon\CarbonInterface;
+use App\Helpers\ResponseHelper;
+use App\Services\BookingService;
+use App\Exceptions\ValueException;
 use App\Http\Requests\Booking\CreateRequest;
 use App\Http\Requests\Booking\ListRequest;
-use App\Services\BookingService;
-use App\Values\{Client, Vehicle};
 
 class BookingController extends BaseController
 {
     public function __construct(
-        readonly private BookingService $booking
+        readonly private LogHelper      $log,
+        readonly private BookingService $booking,
+        readonly private ResponseHelper $response,
+        readonly private CarbonInterface $carbon
     ){}
 
     /**
@@ -18,9 +26,11 @@ class BookingController extends BaseController
      */
     public function view(int $bookingId)
     {
-        return $this
+        $booking = $this
         ->booking
         ->find($bookingId);
+
+        return $this->response->ok($booking);
     }
 
     /**
@@ -28,15 +38,25 @@ class BookingController extends BaseController
      */
     public function list(ListRequest $request)
     {
-        $perPage       = $request->validated('per_page', 15);
-        $sortColumn    = $request->validated('sort_column', 'date');
-        $sortDirection = $request->validated('sort_direction', 'DESC');
+        try{
+            $perPage       = $request->validated('per_page', 15);
+            $sortColumn    = $request->validated('sort_column', 'date');
+            $sortDirection = $request->validated('sort_direction', 'DESC');
+    
+            $list = $this
+                ->booking
+                ->list($sortColumn, $sortDirection, $perPage);
+    
+            return $this
+            ->response
+            ->ok($list);
 
-        $list = $this
-            ->booking
-            ->list($sortColumn, $sortDirection, $perPage);
-
-        return $list;
+        } catch(ValueException $e) {
+            return $this->response->error($e->getMessage());
+        } catch(\Exception $e)  {
+            $this->log->info($e->getMessage());
+            return $this->response->server();
+        }
     }
 
     /**
@@ -52,7 +72,11 @@ class BookingController extends BaseController
             $phone  = $request->validated('phone');
             $model  = $request->validated('model');
             $make   = $request->validated('make');
-            $date   = $request->date('date');
+            $dateString = $request->validate('date');
+
+            $date = $this
+            ->carbon
+            ->createFromFormat('Y-m-d', $dateString);
             
             // value objects
             $client  = new Client($name, $phone, $email);
@@ -61,13 +85,13 @@ class BookingController extends BaseController
             $this->booking
                 ->addNew($slotId, $client, $vehicle, $date);
 
-            return response()->noContent();
+            return $this->response->noContent();
 
-        } catch(\Exception $e) {
-            //@todo fix response
-            return response()->json([
-                'error' => 'unable to creeate'
-            ]);
+        } catch(ValueException $e) {
+            return $this->response->error($e->getMessage());
+        } catch(\Exception $e)  {
+            $this->log->info($e->getMessage());
+            return $this->response->server();
         }
     }
 }

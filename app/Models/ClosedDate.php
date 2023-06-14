@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Carbon\CarbonInterface;
+use Carbon\Carbon;
 
 class ClosedDate extends Model
 {
@@ -27,4 +30,13 @@ class ClosedDate extends Model
         'date' => 'datetime:Y-m-d'
     ];
 
+    /**
+     * Fetch all the dates that closed as from the given date
+     */
+    public function scopeAsFromDate(
+        Builder         $query,
+        CarbonInterface $date
+    ) : void {
+        $query->whereDate('closed_dates.date', '>=', $date);
+    }
 }

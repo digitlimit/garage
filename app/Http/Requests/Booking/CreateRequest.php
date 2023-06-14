@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\Booking;
 
-use Illuminate\Foundation\Http\FormRequest;
-use App\Helpers\SettingHelper;
-
 use App\Rules\Phone;
-use App\Rules\BusinessDay;
+use App\Helpers\SettingHelper;
 use Illuminate\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use App\Repositories\Contracts\SlotRepository;
 
 class CreateRequest extends FormRequest

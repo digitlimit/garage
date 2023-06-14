@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Helpers\LogHelper;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use App\Helpers\ResponseHelper;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\Auth\Factory;
-use Illuminate\Contracts\Routing\ResponseFactory;
 use App\Http\Requests\Auth\LoginRequest;
 
 class AuthController extends BaseController
@@ -15,20 +15,25 @@ class AuthController extends BaseController
         /**
          * Authentication Interface
          */
-        private Factory $auth,
+        readonly private Factory $auth,
 
         /**
-         * Response Interface
+         * Response helper
          */
-        private ResponseFactory $response
+        readonly private ResponseHelper $response,
+
+        /**
+         * Logger instance
+         */
+        readonly private LogHelper $log
     ) {}
 
     /**
      * Fetch the auth user
      */
-    public function user(Request $request): Response
+    public function user(Request $request): JsonResponse
     {
-        return $request->user();
+        return $this->response->ok($request->user());
     }
 
     /**
@@ -36,24 +41,29 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        $request->authenticate();
-
-        $request->session()->regenerate();
-
-        return $this->response->json($request->user());
+        try{
+            $request->authenticate();
+            $request->session()->regenerate();
+            return $this->response->ok($request->user());
+        } catch(\Exception $e) {
+            $this->log->info($e->getMessage());
+            return $this->response->server();
+        }
     }
 
     /**
      * Handle an incoming authentication logout request.
      */
-    public function logout(Request $request): Response 
+    public function logout(Request $request): JsonResponse
     {
-        $this->auth->guard('web')->logout();
-
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
-        return $this->response->noContent();
+        try {
+            $this->auth->guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            return $this->response->noContent();
+        } catch(\Exception $e) {
+            $this->log->info($e->getMessage());
+            return $this->response->server();
+        }
     }
 }

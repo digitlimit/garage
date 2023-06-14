@@ -2,10 +2,9 @@
 
 namespace App\Repositories\Contracts;
 
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Carbon\CarbonInterface;
 use App\Values\BookingSorting;
-use DateTime;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface BookingRepository
 {
@@ -15,7 +14,7 @@ interface BookingRepository
         int $slotId, 
         int $clientId, 
         int $vehicleId, 
-        DateTime $date
+        CarbonInterface $date
     ) : int;
 
     public function list(BookingSorting $sort,int $perPage=15): LengthAwarePaginator;

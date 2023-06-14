@@ -3,14 +3,17 @@
 namespace App\Services;
 
 use Exception;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Contracts\Config\Repository;
-use App\Repositories\Contracts\{BookingRepository, ClientRepository, VehicleRepository};
-use App\Services\{ClientEmailService, AdminEmailService};
 use App\Values\Client;
 use App\Values\Vehicle;
+use Carbon\CarbonInterface;
 use App\Values\BookingSorting;
-use DateTime;
+use Illuminate\Support\Facades\DB;
+use App\Services\AdminEmailService;
+use App\Services\ClientEmailService;
+use Illuminate\Contracts\Config\Repository;
+use App\Repositories\Contracts\BookingRepository;
+use App\Repositories\Contracts\ClientRepository;
+use App\Repositories\Contracts\VehicleRepository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookingService
@@ -57,7 +60,7 @@ class BookingService
         int       $slotId,
         Client    $client,
         Vehicle   $vehicle,
-        DateTime $date
+        CarbonInterface $date
     ) : int|null {
 
         DB::beginTransaction();

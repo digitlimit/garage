@@ -6,15 +6,23 @@ use App\Traits\ValueHelper;
 readonly class BookingSorting
 {
     use ValueHelper;
+  
+    /**
+     * Minimum record per page
+     */
+    const MIN_PER_PAGE = 1;
+
+    /**
+     * Maximum record per page
+     */
+    const MAX_PER_PAGE = 500;
 
     /**
      * Booking can be ordered by the columns in the booking table
      */
     const COLUMNS = [
         'id',
-        'slot_start',
-        'slot_end',
-        'created_at'
+        'date'
     ];
 
     /**

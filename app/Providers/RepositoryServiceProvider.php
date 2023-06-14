@@ -30,6 +30,11 @@ class RepositoryServiceProvider extends ServiceProvider
             \App\Repositories\Contracts\SlotRepository::class, 
             \App\Repositories\Eloquent\SlotRepository::class
         );
+
+        $this->app->bind(
+            \App\Repositories\Contracts\ClosedDateRepository::class, 
+            \App\Repositories\Eloquent\ClosedDateRepository::class
+        );
     }
 
     /**

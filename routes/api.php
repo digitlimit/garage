@@ -30,6 +30,7 @@ Route::controller(BookingController::class)
 ->prefix('bookings')
 ->name('bookings.')
 ->group(function () {
+    // Route::get('/',   'list')->name('list');
     Route::post('/',   'create')->name('create');
 });
 
@@ -55,13 +56,13 @@ Route::middleware('auth:sanctum')
         Route::post('/logout', 'logout')->name('logout');
     });
 
-    Route::controller(BookingController::class)
-    ->prefix('bookings')
-    ->name('bookings.')
-    ->group(function () {
-        Route::get('/',           'list')->name('list')->can('list', 'booking');
-        Route::get('/{booking}',  'view')->name('view')->can('view', 'booking');
-    });
+    // Route::controller(BookingController::class)
+    // ->prefix('bookings')
+    // ->name('bookings.')
+    // ->group(function () {
+    //     Route::get('/',           'list')->name('list')->can('list', 'booking');
+    //     Route::get('/{booking}',  'view')->name('view')->can('view', 'booking');
+    // });
 
     Route::controller(SlotController::class)
     ->prefix('slots')
