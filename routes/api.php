@@ -16,6 +16,9 @@ use App\Http\Controllers\API\SlotController;
 |
 */
 
+#--------------------------------------------------------------------------
+# Guests Routes
+#--------------------------------------------------------------------------
 Route::post('/auth/login', [AuthController::class,    'login'])
 ->name('auth.login');
 
@@ -25,6 +28,9 @@ Route::post('/bookings',   [BookingController::class, 'create'])
 Route::get('/slots',       [SlotController::class,    'list'])
 ->name('slots.list');
 
+#--------------------------------------------------------------------------
+# Auth Protected Routes
+#--------------------------------------------------------------------------
 Route::middleware('auth:sanctum')
 ->group(function () 
 {
@@ -48,8 +54,8 @@ Route::middleware('auth:sanctum')
     ->prefix('slots')
     ->name('slots.')
     ->group(function () {
-        Route::post('/block',     'block')->name('block')->can('block', 'slot');
-        Route::delete('/unblock', 'unblock')->name('unblock')->can('unblock', 'slot');
+        Route::get('/closed',         'closed')->name('closed')->can('closed', 'slot');
+        Route::post('/close/{slot}',  'close')->name('close')->can('close', 'slot');
+        Route::delete('/open/{slot}', 'open')->name('open')->can('open', 'slot');
     });
-
 });

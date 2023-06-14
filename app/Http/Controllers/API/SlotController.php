@@ -11,7 +11,7 @@ class SlotController extends BaseController
     ){}
 
     /**
-     * Fetch a listing a slots.
+     * Fetch a list of slots.
      */
     public function list()
     {
@@ -21,17 +21,27 @@ class SlotController extends BaseController
     }
 
     /**
-     * Block a slot
+     * Fetch a list of closed slots.
      */
-    public function block()
+    public function closed()
+    {   //@todo implement
+        return $this
+            ->slot
+            ->all(['id', 'name']);
+    }
+
+    /**
+     * Close a slot to prevent client's from picking them
+     */
+    public function close(int $slotId)
     {
       
     }
 
     /**
-     * Unblock a slot
+     * Open a closed slot to allow client's to pick them
      */
-    public function unblock()
+    public function open(int $slotId)
     {
       
     }

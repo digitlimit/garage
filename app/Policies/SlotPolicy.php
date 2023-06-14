@@ -8,59 +8,27 @@ use Illuminate\Auth\Access\Response;
 
 class SlotPolicy
 {
+    public function __construct(
+        readonly private Response $response
+    ){}
+
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the user can close a slot.
      */
-    public function viewAny(User $user): bool
+    public function close(User $user, Slot $slot): Response
     {
-        //
+        return $user->admin
+        ? $this->response->allow()
+        : $this->response->deny('You do not have access this slot.');
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the user can open a closed slot
      */
-    public function view(User $user, Slot $slot): bool
+    public function open(User $user, Slot $slot): Response
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     */
-    public function create(User $user): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     */
-    public function update(User $user, Slot $slot): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can delete the model.
-     */
-    public function delete(User $user, Slot $slot): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(User $user, Slot $slot): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Slot $slot): bool
-    {
-        //
+        return $user->admin
+        ? $this->response->allow()
+        : $this->response->deny('You do not have access this slot.');
     }
 }

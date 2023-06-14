@@ -8,16 +8,21 @@
   const auth    = useAuth();
   const booking = useBooking();
 
-//   let bookings  = ref([]);
+  let bookings  = ref([]);
+  let filters   = ref({
+        date: '',
+        order_direction: 'desc',
+        order_column   : 'date'
+  });
 
-//   onMounted( async () => { 
-//     bookings = await booking.list();
-//   });
+  onMounted( async () => { 
+    bookings = await booking.list(filters);
+  });
 
 </script>
 <template>
   <DashboardLayout>
-    <PageTitle title="Dashboard" subtitle="Welcome to Paul" />
+    <PageTitle title="Dashboard" :subtitle="'Welcome to ' + auth.user.name" />
     <section class="w-full"> 
         <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
         <div class="px-6 py-5 font-bold border-b border-gray-100">List</div>
@@ -39,41 +44,29 @@
             <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Product name
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Color
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Category
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Price
-                            </th>
-                            <th scope="col" class="px-6 py-3">
-                                Action
-                            </th>
+                            <th scope="col" class="px-6 py-3">Name</th>
+                            <th scope="col" class="px-6 py-3">Email</th>
+                            <th scope="col" class="px-6 py-3">Phone</th>
+                            <th scope="col" class="px-6 py-3">Make</th>
+                            <th scope="col" class="px-6 py-3">Model</th>
+                            <th scope="col" class="px-6 py-3">Slot</th>
+                            <th scope="col" class="px-6 py-3">Date</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="bg-white  dark:bg-gray-800  hover:bg-gray-50 dark:hover:bg-gray-600">
-                          
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                Apple MacBook Pro 17"
-                            </th>
-                            <td class="px-6 py-4">
-                                Silver
-                            </td>
-                            <td class="px-6 py-4">
-                                Laptop
-                            </td>
-                            <td class="px-6 py-4">
-                                $2999
-                            </td>
-                            <td class="px-6 py-4">
-                                <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                            </td>
+
+                        <tr 
+                            v-for="(booking, index) in bookings"
+                            :key="index"
+                            class="bg-white  dark:bg-gray-800  hover:bg-gray-50 dark:hover:bg-gray-600"
+                        >
+                            <td class="px-6 py-4">{{ booking.name }}</td>
+                            <td class="px-6 py-4">{{ booking.email }}</td>
+                            <td class="px-6 py-4">{{ booking.phone }}</td>
+                            <td class="px-6 py-4">{{ booking.make }}</td>
+                            <td class="px-6 py-4">{{ booking.model }}</td>
+                            <td class="px-6 py-4">{{ booking.slot }}</td>
+                            <td class="px-6 py-4">{{ booking.date }}</td>
                         </tr>
                     </tbody>
                 </table>
