@@ -86,6 +86,9 @@ class SlotController extends BaseController
             } else {
                 $this->closedDate->close($date);
             }    
+
+            return $this->response->noContent();
+
         } catch (\Exception $e) {
             $this->log->info($e->getMessage());
             return $this->response->server();
@@ -107,7 +110,10 @@ class SlotController extends BaseController
                 $this->closedSlot->open($slotId, $date);
             } else {
                 $this->closedDate->open($date);
-            }    
+            }   
+            
+            return $this->response->noContent();
+            
         } catch (\Exception $e) {
             $this->log->info($e->getMessage());
             return $this->response->server();

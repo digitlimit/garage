@@ -38,13 +38,19 @@ class ClosedSlotRepository implements RepositoryInterface
     }
 
    /**
-     * Close a ssllot for the given date
+     * Close a slot for the given date
      */
     public function close(int $slotId, CarbonInterface $date) : int
     {
+        $closed = $this->model->closedFor($slotId, $date)->first();
+
+        if(!empty($closed)) {
+            return $closed->id;
+        }
+        
         $closed = $this
         ->model
-        ->firstOrCreate(['slot_id' => $slotId, 'date' => $date]);
+        ->create(['slot_id' => $slotId, 'date' => $date]);
 
         return $closed->id;
     }
@@ -54,11 +60,7 @@ class ClosedSlotRepository implements RepositoryInterface
      */
     public function open(int $slotId, CarbonInterface $date) : bool
     {
-        $closed = $this
-        ->model
-        ->where('slot_id', $slotId)
-        ->whereDate(['date' => $date])
-        ->first();
+        $closed = $this->model->closedFor($slotId, $date)->first();
 
         if($closed) {
             $closed->delete();

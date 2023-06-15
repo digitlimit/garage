@@ -38,9 +38,15 @@ class ClosedDateRepository implements RepositoryInterface
      */
     public function close(CarbonInterface $date) : int
     {
+        $closed = $this->model->whereDate('date', $date)->first();
+
+        if(!empty($closed)) {
+            return $closed->id;
+        }
+  
         $closed = $this
         ->model
-        ->firstOrCreate(['date' => $date]);
+        ->create(['date' => $date]);
 
         return $closed->id;
     }
@@ -50,10 +56,7 @@ class ClosedDateRepository implements RepositoryInterface
      */
     public function open(CarbonInterface $date) : bool
     {
-        $closed = $this
-        ->model
-        ->whereDate(['date' => $date])
-        ->first();
+        $closed = $this->model->whereDate('date', $date)->first();
 
         if($closed) {
             $closed->delete();

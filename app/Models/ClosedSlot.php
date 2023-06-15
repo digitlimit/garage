@@ -42,4 +42,17 @@ class ClosedSlot extends Model
         ->join('slots', 'closed_slots.slot_id', '=', 'slots.id')
         ->whereDate('closed_slots.date', '>=', $date);
     }
+
+    /**
+     * Fetch closed slots by slot ID and date
+     */
+    public function scopeClosedFor(
+        Builder         $query,
+        int             $slotId,
+        CarbonInterface $date
+    ) : void {
+        $query
+        ->where('closed_slots.slot_id', $slotId)
+        ->whereDate('closed_slots.date', $date);
+    }
 }

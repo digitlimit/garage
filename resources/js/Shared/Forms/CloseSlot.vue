@@ -1,7 +1,8 @@
 
 <script setup>
-    import {ref, onMounted} from "vue";
+    import {ref, computed, onMounted} from "vue"; 
     import { useSlot }      from '@/Store/slot';
+    import SlotHelper       from '../Helpers/SlotHeper';
 
     import SubmitButton from '@/Shared/Partials/Button.vue';
     import Alert        from '@/Shared/Partials/Alert.vue';
@@ -10,39 +11,25 @@
   
     const slot = useSlot();
    
-    const form = ref({
-        date: null,
-        slot: null
-    });
-    const slots       = ref([]);
-    const closedSlots = ref([]);
-    const closedDates = ref([]);
+    const slots = ref([]);
+    const form  = ref({ date: null, slot: null});
 
-    onMounted( async () => { 
-        // fetch closed slots
-        closedSlots.value = await slot.closedSlots();
-    });
+    const disabledDates = ref([]);
 
-    onMounted( async () => { 
-        // fetch closed dates
-        closedDates.value = await slot.closedDates(); 
-    });
-
+    // select options
     onMounted(async () => {
-        // fetch slots for select menu
-        const options = await slot.slots();
+        slots.value = await SlotHelper.selectOptions();
+    });
 
-        options.forEach((slot, index) => {
-            options[index] = {label: slot.name, value: slot.id}
-        });
-        
-        slots.value = options;
+    // closed dates
+    onMounted(async () => {
+        const dates = await SlotHelper.disabledDates();
+        disabledDates.value = dates;
     });
 
     // close the given slot and date or only date
     const onSubmit = async () => { 
-     const res = await slot.closeSlot(form.value);
-    //  console.log(res);
+        const res = await slot.closeSlot(form.value);
     };
 
 </script>
@@ -56,7 +43,12 @@
                 <SelectInput v-model="form.slot" :error="slot.errors.slot" :options="slots" label="Slot" />
             </div>
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <DateInput v-model="form.date" :error="slot.errors.date" type="text" label="Date" />
+                <DateInput 
+                    v-model="form.date" 
+                    :disabled-dates="disabledDates"
+                    :error="slot.errors.date" 
+                    label="Date" 
+                />
             </div>
         </div>
 

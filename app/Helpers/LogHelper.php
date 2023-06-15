@@ -13,7 +13,7 @@ class LogHelper
     /**
      * Send logs to log channel
      */
-    public function info(...$logs) : void
+    public function info($logs) : void
     {
         $this->log->info($logs);
     }

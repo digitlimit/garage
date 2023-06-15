@@ -112,12 +112,13 @@ export const useSlot = defineStore(storeId, () => {
     {
         this.loading = true;
 
-        date = Helper.dateYmd(date);
+        date = date ? Helper.dateYmd(date) : null;
         const params = {slot, date};
 
         const res = await API
             .post('/slots/close', params, () => {
                 this.loading = false;
+                this.success = 'Slot blocked successfully.';
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
@@ -142,6 +143,7 @@ export const useSlot = defineStore(storeId, () => {
 
         const res = await API
             .post('/slots/open', params, () => {
+                this.success = 'Slot opened successfully.';
                 this.loading = false;
             }, ({ message, errors }) => {
                 this.loading = false;
