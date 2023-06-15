@@ -32,18 +32,24 @@ export const useBooking = defineStore(storeId, () => {
             });
     }
 
-    async function list(booking) 
+    async function list(date) 
     {
-        const params = booking.value;
+        date = date ? Helper.dateYmd(date) : null;
 
-        return await API
-            .get('/bookings', params, () => {
+        const filters = {
+            date
+        };
+
+        const bookings = await API
+            .get('/bookings', filters, () => {
                 this.loading = false;
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
                 this.errors  = errors;
             });
+
+        return bookings ? bookings : [];
     }
   
     return { 

@@ -38,16 +38,23 @@ class BookingService
      * Fetch list of booking
      */
     public function list(
-        string $sortColumn, 
-        string $sortDirection, 
-        int    $perPage
+        string          $sortColumn, 
+        string          $sortDirection, 
+        int             $perPage,
+        CarbonInterface $date = null
     ) : LengthAwarePaginator {
 
         $sorting = new BookingSorting($sortColumn, $sortDirection);
 
-        return $this
+        if($date) {
+            return $this
             ->booking
-            ->list($sorting, $perPage);
+            ->filterByDate($date, $sorting, $perPage);
+        }
+      
+        return $this
+        ->booking
+        ->list($sorting, $perPage);
     }
 
     /**

@@ -11,17 +11,20 @@
   const auth    = useAuth();
   const booking = useBooking();
 
+  const date     = ref(null);
   const bookings = ref([]);
-  const filters  = ref({
-        date           : new Date(),
-        sort_direction : 'desc',
-        sort_column    : 'date'
-  });
 
   onMounted( async () => {
-    const { data } = await booking.list(filters);  
+    const { data } = await booking.list();  
     bookings.value = data;
   });
+
+  // send a request with filters
+  const filterList = async (selectedDate) => {
+    const { data } = await booking.list(selectedDate);  
+    bookings.value = data;
+  };
+
 </script>
 <template>
   <DashboardLayout>
@@ -30,17 +33,12 @@
         <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
         <div class="px-6 py-5 font-bold border-b border-gray-100">List of bookings</div>
         <div class="p-4 flex-grow">
-       
-                 
-            <div class="relative overflow-x-auto sm:rounded-lg">
-                <div class="flex items-center justify-between pb-4">
-                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                        <DateInput v-model="filters.date" type="text" />
-                    </div>
-                </div>
+
+            <div class="w-full md:w-1/3 mb-6 md:mb-0 pb-3">
+                <DateInput @update:modelValue="filterList" v-model="date" type="text" />
             </div>
 
-            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <table v-if="bookings.length" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                         <tr>
                             <th scope="col" class="px-6 py-3">Name</th>
@@ -68,7 +66,11 @@
                             <td class="px-6 py-4">{{ booking.date }}</td>
                         </tr>
                     </tbody>
-                </table>
+            </table>
+
+            <div v-else class="p-3 pl-0">
+                There are no bookings
+            </div>
         </div>
         </div>
     </section>

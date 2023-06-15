@@ -86,7 +86,7 @@ class BookingRepository implements RepositoryInterface
         return $this->model
         ->query()
         ->list()
-        ->when($date, fn($query) => $query->whereDate('bookings.start', $date))
+        ->when($date, fn($query) => $query->whereDate('bookings.date', $date))
         ->orderBy($sort->getColumn(), $sort->getDirection())
         ->paginate($perPage);
     }

@@ -19,7 +19,7 @@ const handleOpen = (value) => {
 
 </script>
 <template>
-    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table v-if="slots.length" class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
                 <th scope="col" class="px-6 py-3">Name</th>
@@ -33,7 +33,7 @@ const handleOpen = (value) => {
             :key="index"
             class="bg-white  dark:bg-gray-800  hover:bg-gray-50 dark:hover:bg-gray-600"
             >
-                <td class="px-6 py-4">{{ slot.name ?? 'All slots' }}</td>
+                <td class="px-6 py-4">{{ slot.name ?? '-- All slots --' }}</td>
                 <td class="px-6 py-4">{{ slot.date }}</td>
                 <td v-if="openable" class="px-6 py-4">
                     <SubmitButton @click="handleOpen(slot)" label="Reopen" />

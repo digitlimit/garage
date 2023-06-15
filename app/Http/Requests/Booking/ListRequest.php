@@ -30,6 +30,7 @@ class ListRequest extends FormRequest
             'per_page'       => ['nullable', 'integer', "min:$minPage", "max:$maxPage"],
             'sort_column'    => ['nullable', new In(BookingSorting::COLUMNS)],
             'sort_direction' => ['nullable', new In(BookingSorting::DIRECTIONS)],
+            'date'           => ['nullable', 'date_format:Y-m-d'],
         ];
     }
 }

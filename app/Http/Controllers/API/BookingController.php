@@ -39,13 +39,18 @@ class BookingController extends BaseController
     public function list(ListRequest $request)
     {
         try{
-            $perPage       = $request->validated('per_page', 15);
-            $sortColumn    = $request->validated('sort_column', 'date');
-            $sortDirection = $request->validated('sort_direction', 'DESC');
-    
+            $perPage       = $request->validated('per_page',       15);
+            $sortColumn    = $request->validated('sort_column',   'date');
+            $sortDirection = $request->validated('sort_direction', 'desc');
+            $dateString    = $request->validated('date');
+            
+            $date = $dateString 
+                ? $this->carbon->createFromFormat('Y-m-d', $dateString)
+                : null;
+
             $list = $this
                 ->booking
-                ->list($sortColumn, $sortDirection, $perPage);
+                ->list($sortColumn, $sortDirection, $perPage, $date);
     
             return $this
             ->response

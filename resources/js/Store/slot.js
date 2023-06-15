@@ -46,7 +46,7 @@ export const useSlot = defineStore(storeId, () => {
          this.loading = true;
  
          const slots = await API
-             .get('/slots/closed-slots', {}, () => {
+             .get('/slots/booked-slots', {}, () => {
                  this.loading = false;
              }, ({ message, errors }) => {
                  this.loading = false;

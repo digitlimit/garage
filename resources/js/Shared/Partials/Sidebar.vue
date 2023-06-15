@@ -10,8 +10,8 @@
       <div class="flex-grow flex flex-col justify-between text-gray-500 bg-gray-800">
         <nav class="flex flex-col mx-4 my-6 space-y-4">
           <NavLink name="dashboard.index" :params="{}" title="Bookings" />
-          <NavLink name="slots.closed"    :params="{}" title="Closed Slots" />
-          <NavLink name="slots.close"     :params="{}" title="Block a Slots" />
+          <NavLink name="slots.list"      :params="{}" title="Slots" />
+          <NavLink name="slots.close"     :params="{}" title="Block Slot" />
         </nav>
       </div>
     </aside>

@@ -1,11 +1,11 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import BookingList      from "@/Pages/Booking/List.vue";
-import CreateBooking    from "@/Pages/Booking/Create.vue";
-import AuthLogin        from "@/Pages/Auth/Login.vue";
-import ViewBooking      from "@/Pages/Booking/View.vue";
-import ListClosedSlot   from "@/Pages/Slot/ListClosedSlot.vue";
-import CreateClosedSlot from "@/Pages/Slot/CreateClosedSlot.vue";
+import BookingList   from "@/Pages/Booking/List.vue";
+import CreateBooking from "@/Pages/Booking/Create.vue";
+import AuthLogin     from "@/Pages/Auth/Login.vue";
+import ViewBooking   from "@/Pages/Booking/View.vue";
+import ListSlot      from "@/Pages/Slot/List.vue";
+import CloseSlot     from "@/Pages/Slot/Close.vue";
 
 const routes = [
     {
@@ -39,15 +39,15 @@ const routes = [
         meta: {middleware: ['admin', 'guest']}
     },
     {
-        path: "/slots/closed",
-        name: "slots.closed",
-        component: ListClosedSlot,
+        path: "/slots/list",
+        name: "slots.list",
+        component: ListSlot,
         meta: {middleware: ['admin']}
     },
     {
         path: "/slots/close",
         name: "slots.close",
-        component: CreateClosedSlot,
+        component: CloseSlot,
         meta: {middleware: ['admin']}
     }
 ];

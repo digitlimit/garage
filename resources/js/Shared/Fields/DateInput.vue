@@ -36,7 +36,7 @@
       {{ label }}
     </label>
     <VueDatePicker 
-      ref="input" 
+   
       v-bind="{ ...$attrs, class: null }" 
       v-model="selected"
       input-class-name="date-input"
