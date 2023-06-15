@@ -26,6 +26,11 @@ export default {
     },
 
     dateYmd(date) {
-        return date.toISOString().split('T')[0];
+
+        if(typeof date.getMonth === 'function') {
+            return date.toISOString().split('T')[0];
+        }
+        
+        return date;
     }
 }

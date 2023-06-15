@@ -22,7 +22,7 @@ const props = defineProps({
         <span v-if="title" class="font-medium">{{ title }}</span> {{ success }}
     </div>
     <div v-else-if="error" 
-        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+        class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
         <span v-if="title" class="font-medium">{{ title }}</span> {{ error }}
     </div>
 </template>

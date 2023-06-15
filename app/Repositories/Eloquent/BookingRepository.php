@@ -20,11 +20,14 @@ class BookingRepository implements RepositoryInterface
     /**
      * Fetch a booking by ID
      */
-    public function find(int $bookingId) : mixed
+    public function findWithRelated(int $bookingId) : mixed
     {
         return $this
             ->model
-            ->find($bookingId);
+            ->withRelated()
+            ->selectedRelated()
+            ->where('bookings.id', $bookingId)
+            ->first($bookingId);
     }
 
    /**

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 interface BookingRepository
 {
-    public function find(int $bookingId) : mixed;
+    public function findWithRelated(int $bookingId) : mixed;
 
     public function create(
         int $slotId, 

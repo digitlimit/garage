@@ -1,3 +1,6 @@
+@php
+    $booking = (object) $booking;
+@endphp
 <x-mail::message>
 # New Booking 
 
@@ -5,12 +8,15 @@
     The booking below was just created.
 </x-mail::panel>
 
-<x-mail::table>
-| Date   | {{$booking->date}}   |
-</x-mail::table>
+Name  : {{ $booking->name }} \
+Email : {{ $booking->email }}\
+Phone : {{ $booking->phone }}\
+Make  : {{ $booking->make }}\
+Model : {{ $booking->model }}\
+Slot  : {{ $booking->slot }}
 
-<x-mail::button :url="$url">
-    View Booking
+<x-mail::button :url="'/bookings'">
+    View Bookings
 </x-mail::button>
 
 Thanks,<br>

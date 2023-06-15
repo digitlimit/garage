@@ -3,6 +3,7 @@
     import {ref, computed, onMounted} from "vue";
     import { useBooking } from "@/Store/booking";
     import { useSlot }    from "@/Store/slot";
+    import SlotHelper     from '../Helpers/SlotHeper';
 
     import Alert        from '@/Shared/Partials/Alert.vue';
     import SubmitButton from '@/Shared/Partials/Button.vue';
@@ -26,16 +27,12 @@
 
     const slots = ref([]);
 
+    // select options
     onMounted(async () => {
-        // fetch slots for select menu
-        const options = await slot.slots();
-
-        options.forEach((slot, index) => {
-            options[index] = {label: slot.name, value: slot.id}
-        });
-        
-        slots.value = options;
+        slots.value = await SlotHelper
+            .selectOptions([{label: "Select", value: null}]);
     });
+
 
     // create booking
     const onSubmit = async () => {

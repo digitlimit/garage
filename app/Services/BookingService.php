@@ -31,7 +31,7 @@ class BookingService
     {
         return $this
         ->booking
-        ->find($bookingId);
+        ->findWithRelated($bookingId);
     }
 
     /**
@@ -95,11 +95,16 @@ class BookingService
 
         // send emails to client and admin
         if($bookingId) {
+            $booking = $this
+                ->booking
+                ->findWithRelated($bookingId)
+                ->toArray();
+
             $this->clientEmail
-                ->sendBookingConfirmation($bookingId, $client);
+                ->sendBookingConfirmation($booking);
 
             $this->adminEmail
-                ->sendBookingConfirmation($bookingId);
+                ->sendBookingConfirmation($booking);
         }
 
         return $bookingId;

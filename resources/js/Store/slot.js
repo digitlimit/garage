@@ -9,11 +9,22 @@ export const useSlot = defineStore(storeId, () => {
     /**
      * States
      */
-    let loading  = ref(true);
+    let loading  = ref(false);
     let complete = ref(false);
     let error    = ref('');
     let success  = ref('');
     let errors   = ref([]);
+
+    /**
+     * Clear states
+     */
+    function clear() {
+        loading.value  = false;
+        complete.value = false;
+        error.value    = '';
+        success.value  = '';
+        errors.value   = [];
+    }
 
     /**
      * Fetch a list of slot
@@ -43,9 +54,10 @@ export const useSlot = defineStore(storeId, () => {
      */
      async function bookedSlots() 
      {
-         this.loading = true;
+        clear();
+        this.loading = true;
  
-         const slots = await API
+        const slots = await API
              .get('/slots/booked-slots', {}, () => {
                  this.loading = false;
              }, ({ message, errors }) => {
@@ -110,6 +122,7 @@ export const useSlot = defineStore(storeId, () => {
      */
     async function closeSlot({ slot, date }) 
     {
+        clear();
         this.loading = true;
 
         date = date ? Helper.dateYmd(date) : null;

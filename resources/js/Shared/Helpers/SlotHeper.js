@@ -11,7 +11,7 @@ export default {
         return closedDates.map(item => new Date(item.date));
     },
 
-    async selectOptions()
+    async selectOptions(prefixLabel)
     {
         const slot = useSlot();
         const options = await slot.slots();
@@ -19,6 +19,10 @@ export default {
         options.forEach((slot, index) => {
             options[index] = {label: slot.name, value: slot.id}
         });
+
+        if(prefixLabel) {
+            return prefixLabel.concat(options);
+        }
 
         const newOptions = [{label: "Not applicable", value: null}]
             .concat(options);

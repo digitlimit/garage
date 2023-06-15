@@ -12,26 +12,16 @@ class ClientEmailService
         /**
          * Email client contract
          */
-        readonly private Mailer $mailer,
-
-        /**
-         * Booking confirmation mailable
-         */
-        readonly private BookingConfirmation $mailable
+        readonly private Mailer $mailer
     ){}
 
     /**
      * Send booking confirmation to Client
      */
-    public function sendBookingConfirmation(
-        int    $bookingId,
-        Client $client
-    ) : void {
-
-        $this->mailable->setUp($bookingId);
-
+    public function sendBookingConfirmation(array $booking) : void 
+    {
         $this->mailer
-            ->to($client->getEmail())
-            ->send($this->mailable);
+            ->to($booking['email'])
+            ->send(new BookingConfirmation($booking));
     }
 }

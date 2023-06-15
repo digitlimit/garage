@@ -14,8 +14,21 @@ export const useBooking = defineStore(storeId, () => {
     let success  = ref('');
     let errors   = ref([]);
 
+    /**
+     * Clear states
+     */
+     function clear() {
+        loading.value  = false;
+        complete.value = false;
+        error.value    = '';
+        success.value  = '';
+        errors.value   = [];
+    }
+
     async function create(booking) 
     {
+        clear();
+        this.loading = true;
         const params = booking.value;
 
         params.date = Helper.dateYmd(params.date);

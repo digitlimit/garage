@@ -35,8 +35,6 @@ class SettingHelper
      */
     public function adminEmail() : string
     {
-        return $this
-        ->config
-        ->get('app.admin.email');
+        return $this->get("notify_email");
     }
 }

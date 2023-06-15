@@ -15,7 +15,7 @@
           type: String,
           default: 'text'
       },
-      modelValue: Date,
+      modelValue: Date|String,
       label: String,
       error: String,
   });

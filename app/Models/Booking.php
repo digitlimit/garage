@@ -71,22 +71,40 @@ class Booking extends Model
     }
 
     /**
-     * Scope a query to fetch bookings with related vehicle, client and slot.
+     * Scope all relationships
      */
-    public function scopeList(Builder $query) : void 
+    public function scopeWithRelated(Builder $query) : void 
     {
         $query
         ->join('vehicles', 'bookings.vehicle_id', '=', 'vehicles.id')
         ->join('clients',  'bookings.client_id',  '=', 'clients.id')
-        ->join('slots',    'bookings.slot_id',    '=', 'slots.id')
-        ->select(
+        ->join('slots',    'bookings.slot_id',    '=', 'slots.id');
+    }
+
+    /**
+     * Scope select for related table columns to avoid multiple queries
+     */
+    public function scopeSelectedRelated(Builder $query) : void 
+    {
+        $query->select(
             'bookings.id',
             'bookings.date',
             'vehicles.make',
             'vehicles.model',
             'clients.name',
             'clients.email',
+            'clients.phone',
             'slots.name AS slot'
         );
+    }
+
+    /**
+     * Scope a query to fetch bookings with related vehicle, client and slot.
+     */
+    public function scopeList(Builder $query) : void 
+    {
+        $query
+        ->withRelated()
+        ->selectedRelated();
     }
 }

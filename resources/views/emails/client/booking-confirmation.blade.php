@@ -1,13 +1,22 @@
+@php
+    $booking = (object) $booking;
+@endphp
+
 <x-mail::message>
 # Booking Confirmation
 
 <x-mail::panel>
-    Hello {{$client->getName()}}, Thank you for booking
+    Hello {{ $booking->name }},
+    This is just to confirm we recieved your booking.
 </x-mail::panel>
 
-<x-mail::table>
-    | Date   | {{$booking->date}}   |
-</x-mail::table>
+# Booking Detials:
+
+Make  : {{ $booking->make }}\
+Model : {{ $booking->model }}\
+Slot  : {{ $booking->slot }}
+
+Please don't miss your slot. 
 
 Thanks,<br>
 {{ config('app.name') }}
