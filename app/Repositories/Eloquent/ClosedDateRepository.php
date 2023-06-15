@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\ClosedDate;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Carbon;
 use App\Repositories\Contracts\ClosedDateRepository as RepositoryInterface;
 
 class ClosedDateRepository implements RepositoryInterface
@@ -17,7 +18,7 @@ class ClosedDateRepository implements RepositoryInterface
         /**
          * An instace of Carbon
          */
-        readonly private CarbonInterface $carbon
+        readonly private Carbon $carbon
     ){}
 
     /**

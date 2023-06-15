@@ -29,8 +29,8 @@ readonly class BookingSorting
      * Bookings can be ordered by the directions
      */
     const DIRECTIONS = [
-        'ASC',
-        'DESC'
+        'asc',
+        'desc'
     ];
 
     /**

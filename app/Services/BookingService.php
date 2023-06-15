@@ -87,13 +87,13 @@ class BookingService
         DB::commit();
 
         // send emails to client and admin
-        // if($bookingId) {
-        //     $this->clientEmail
-        //         ->sendBookingConfirmation($client, $vehicle, $date);
+        if($bookingId) {
+            $this->clientEmail
+                ->sendBookingConfirmation($bookingId, $client);
 
-        //     $this->adminEmail
-        //         ->sendBookingConfirmation($bookingId, $client, $vehicle, $date);
-        // }
+            $this->adminEmail
+                ->sendBookingConfirmation($bookingId);
+        }
 
         return $bookingId;
     }

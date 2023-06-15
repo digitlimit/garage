@@ -2,11 +2,10 @@
 
 namespace App\Services;
 
+use App\Helpers\SettingHelper;
 use Illuminate\Contracts\Mail\Mailer;
 use Illuminate\Contracts\Config\Repository;
 use App\Mail\Admin\BookingConfirmation;
-use App\Values\{Client, Vehicle};
-use DateTime;
 
 class AdminEmailService
 {
@@ -17,9 +16,9 @@ class AdminEmailService
         readonly private Mailer $mailer,
 
         /**
-         * Configuration 
+         * Settings
          */
-        readonly private Repository $config,
+        readonly private SettingHelper $setting,
 
         /**
          * Booking confirmation mailable
@@ -30,23 +29,13 @@ class AdminEmailService
     /**
      * Send booking confirmation to admin
      */
-    public function sendBookingConfirmation(
-        int      $bookingId,
-        Client   $client, 
-        Vehicle  $vehicle, 
-        DateTime $date
-    ) : void {
+    public function sendBookingConfirmation(int $bookingId) : void 
+    {
 
-        $adminEmail = $this->config
-            ->get('app.admin.email');
-
-        $this->mailable->setUrl($bookingId);
-        $this->mailable->setClient($client);
-        $this->mailable->setVehicle($vehicle);
-        $this->mailable->setBookingDate($date);
+        $this->mailable->setUp($bookingId);
 
         $this->mailer
-            ->to($adminEmail)
+            ->to($this->setting->adminEmail())
             ->send($this->mailable);
     }
 }

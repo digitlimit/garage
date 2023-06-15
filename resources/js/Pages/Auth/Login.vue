@@ -1,6 +1,6 @@
 <script setup>
     import AuthLayout from "@/Layouts/Auth.vue";
-    import LoginForm  from '@/Components/Forms/AuthLogin.vue';
+    import LoginForm  from '@/Shared/Forms/AuthLogin.vue';
 </script>
 <template>
     <AuthLayout>

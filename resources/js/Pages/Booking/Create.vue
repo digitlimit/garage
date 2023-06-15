@@ -1,7 +1,7 @@
 <script setup>
   import DefaultLayout from '@/Layouts/Default.vue';
   import PageTitle     from '@/Shared/Partials/PageTitle.vue';
-  import CreateBooking from '@/Components/Forms/CreateBooking.vue';
+  import CreateBooking from '@/Shared/Forms/CreateBooking.vue';
 </script>
 <template>
   <DefaultLayout>

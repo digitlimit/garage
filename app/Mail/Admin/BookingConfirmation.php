@@ -3,63 +3,39 @@
 namespace App\Mail\Admin;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Routing\UrlGenerator;
-
-use App\Values\Client;
-use App\Values\Vehicle;
-use DateTime;
+use App\Repositories\Contracts\BookingRepository;
 
 class BookingConfirmation extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    readonly public  string   $url;
-    readonly public  Client   $client;
-    readonly public  Vehicle  $vehicle;
-    readonly public  DateTime $date;
+    public string $url;
+    public $booking;
 
     /**
      * Create a new message instance.
      */
     public function __construct(
-        readonly private UrlGenerator $urlGenerator
+        readonly private UrlGenerator $urlGenerator,
+        readonly private BookingRepository $bookingRepository
     ){}
 
     /**
-     * Set url
+     * Setup booking props
      */
-    public function setUrl(int $bookingId) : void 
+    public function setUp(int $bookingId) : void 
     {
-        $this->urlGenerator->route('bookings.view', $bookingId);
-    }
+        $this->booking = $this->bookingRepository->find($bookingId);
 
-    /**
-     * Set client
-     */
-    public function setClient(Client $client) : void 
-    {
-        $this->client = $client;
-    }
-
-    /**
-     * Set vehicle
-     */
-    public function setVehicle(Vehicle $vehicle) : void 
-    {
-        $this->vehicle = $vehicle;
-    }
-
-    /**
-     * Set Booking Date
-     */
-    public function setBookingDate(DateTime $date) : void 
-    {
-        $this->date = $date;
+        $this->url = $this
+            ->urlGenerator
+            ->route('bookings.view', $bookingId);
     }
 
     /**

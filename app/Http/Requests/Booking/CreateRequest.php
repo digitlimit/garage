@@ -36,7 +36,7 @@ class CreateRequest extends FormRequest
             'phone' => ['required', 'min:5', 'max:13', new Phone],
             'make'  => ['required', 'min:3', 'max:80'],
             'model' => ['required', 'min:3', 'max:80'],
-            'date'  => ['required', 'date:"Y-m-d"', 'after:yesterday'],
+            'date'  => ['required', 'date_format:Y-m-d', 'after:yesterday'],
             'slot'  => ['required', 'integer']
         ];
     }

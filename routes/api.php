@@ -19,27 +19,16 @@ use App\Http\Controllers\API\SlotController;
 #--------------------------------------------------------------------------
 # Guests Routes
 #--------------------------------------------------------------------------
-Route::controller(AuthController::class)
-->prefix('auth')
-->name('auth.')
-->group(function () {
-    Route::post('login', 'login')->name('login');
-});
-
-Route::controller(BookingController::class)
-->prefix('bookings')
-->name('bookings.')
-->group(function () {
-    // Route::get('/',   'list')->name('list');
-    Route::post('/',   'create')->name('create');
-});
+Route::post('auth/login',  [AuthController::class, 'login'])->name('auth.login');
+Route::post('bookings',    [BookingController::class, 'create'])->name('bookings.create');
 
 Route::controller(SlotController::class)
 ->prefix('slots')
 ->name('slots.')
 ->group(function () {
-    Route::get('/',       'list')->name('list');
-    Route::get('/closed', 'closed')->name('closed');
+    Route::get('/',            'list')->name('list');
+    Route::get('closed-slots', 'closedSlots')->name('closed-slots');
+    Route::get('closed-dates', 'closedDates')->name('closed-dates');    
 });
 
 #--------------------------------------------------------------------------
@@ -56,19 +45,20 @@ Route::middleware('auth:sanctum')
         Route::post('/logout', 'logout')->name('logout');
     });
 
-    // Route::controller(BookingController::class)
-    // ->prefix('bookings')
-    // ->name('bookings.')
-    // ->group(function () {
-    //     Route::get('/',           'list')->name('list')->can('list', 'booking');
-    //     Route::get('/{booking}',  'view')->name('view')->can('view', 'booking');
-    // });
+    Route::controller(BookingController::class)
+    ->prefix('bookings')
+    ->name('bookings.')
+    ->group(function () {
+        Route::get('/',           'list')->name('list'); //->can('list', 'booking');
+        Route::get('/{booking}',  'view')->name('view'); //->can('view', 'booking');
+    });
 
     Route::controller(SlotController::class)
     ->prefix('slots')
     ->name('slots.')
     ->group(function () {
-        Route::post('/close/{slot}',  'close')->name('close')->can('close', 'slot');
-        Route::delete('/open/{slot}', 'open')->name('open')->can('open', 'slot');
+        Route::post('/close', 'closeSlot')->name('close'); //->can('close', 'slot');
+        Route::post('/open', 'openSlot')->name('open'); //->can('open',    'slot');
     });
+
 });

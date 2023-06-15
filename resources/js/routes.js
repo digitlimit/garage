@@ -1,9 +1,8 @@
 import { createWebHistory, createRouter } from "vue-router";
 
+import BookingList      from "@/Pages/Booking/List.vue";
 import CreateBooking    from "@/Pages/Booking/Create.vue";
-import AdminDashboard   from "@/Pages/Admin/Dashboard.vue";
 import AuthLogin        from "@/Pages/Auth/Login.vue";
-import ListBooking      from "@/Pages/Booking/List.vue";
 import ViewBooking      from "@/Pages/Booking/View.vue";
 import ListClosedSlot   from "@/Pages/Slot/ListClosedSlot.vue";
 import CreateClosedSlot from "@/Pages/Slot/CreateClosedSlot.vue";
@@ -17,8 +16,8 @@ const routes = [
     },
     {
         path: "/dashboard",
-        name: "admin.dashboard",
-        component: AdminDashboard,
+        name: "dashboard.index",
+        component: BookingList,
         meta: {middleware: ['admin']}
     },
     {
@@ -26,12 +25,6 @@ const routes = [
         name: "auth.login",
         component: AuthLogin,
         meta: {middleware: ['guest']}
-    },
-    {
-        path: "/bookings",
-        name: "bookings.list",
-        component: ListBooking,
-        meta: {middleware: ['admin']}
     },
     {
         path: "/bookings/:booking",
@@ -47,7 +40,7 @@ const routes = [
     },
     {
         path: "/slots/closed",
-        name: "slots.closed.list",
+        name: "slots.closed",
         component: ListClosedSlot,
         meta: {middleware: ['admin']}
     },

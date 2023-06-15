@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Values\Client;
 use App\Values\Vehicle;
 use App\Helpers\LogHelper;
-use Carbon\CarbonInterface;
+use Illuminate\Support\Carbon;
 use App\Helpers\ResponseHelper;
 use App\Services\BookingService;
 use App\Exceptions\ValueException;
@@ -15,10 +15,10 @@ use App\Http\Requests\Booking\ListRequest;
 class BookingController extends BaseController
 {
     public function __construct(
-        readonly private LogHelper      $log,
+        readonly private LogHelper $log,
         readonly private BookingService $booking,
         readonly private ResponseHelper $response,
-        readonly private CarbonInterface $carbon
+        readonly private Carbon $carbon
     ){}
 
     /**
@@ -72,7 +72,7 @@ class BookingController extends BaseController
             $phone  = $request->validated('phone');
             $model  = $request->validated('model');
             $make   = $request->validated('make');
-            $dateString = $request->validate('date');
+            $dateString = $request->validated('date');
 
             $date = $this
             ->carbon

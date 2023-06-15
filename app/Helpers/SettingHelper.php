@@ -29,4 +29,14 @@ class SettingHelper
         ->config
         ->get("setting.$key");
     }
+
+    /**
+     * Get the admin email
+     */
+    public function adminEmail() : string
+    {
+        return $this
+        ->config
+        ->get('app.admin.email');
+    }
 }

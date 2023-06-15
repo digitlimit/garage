@@ -2,11 +2,9 @@
 
 namespace App\Services;
 
+use App\Values\Client;
 use Illuminate\Contracts\Mail\Mailer;
 use App\Mail\Client\BookingConfirmation;
-use App\Values\Client;
-use App\Values\Vehicle;
-use DateTime;
 
 class ClientEmailService
 {
@@ -26,14 +24,11 @@ class ClientEmailService
      * Send booking confirmation to Client
      */
     public function sendBookingConfirmation(
-        Client   $client, 
-        Vehicle  $vehicle, 
-        DateTime $date
+        int    $bookingId,
+        Client $client
     ) : void {
 
-        $this->mailable->setClient($client);
-        $this->mailable->setBookingDate($date);
-        $this->mailable->setVehicle($vehicle);
+        $this->mailable->setUp($bookingId);
 
         $this->mailer
             ->to($client->getEmail())

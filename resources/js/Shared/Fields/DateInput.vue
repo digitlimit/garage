@@ -27,6 +27,7 @@
   const handleChange = (value) => {
     emit('update:modelValue', value);
   };
+
 </script>
 
 <template>

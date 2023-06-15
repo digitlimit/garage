@@ -13,6 +13,11 @@
        <slot></slot>
 
         <div class="flex flex-shrink-0 items-center ml-auto">
+            <div v-if="auth.loggedIn" @click="auth.logout" class="pl-3 ml-3 space-x-1">
+                <router-link :to="{ name: 'dashboard.index'}" class="relative p-2 text-gray-500 focus:text-gray-600">
+                    Dashboard
+                </router-link>
+            </div>
             <div class="border-l pl-3 ml-3 space-x-1">
                 <button v-if="auth.loggedIn" @click="auth.logout" class="relative p-2 text-gray-500 focus:text-gray-600">
                     Logout

@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Models\Slot;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Carbon;
 use App\Repositories\Contracts\SlotRepository as RepositoryInterface;
 
 class SlotRepository implements RepositoryInterface
@@ -17,7 +18,7 @@ class SlotRepository implements RepositoryInterface
         /**
          * An instace of Carbon
          */
-        readonly private CarbonInterface $carbon
+        readonly private Carbon $carbon
     ){}
 
     /**
@@ -38,6 +39,8 @@ class SlotRepository implements RepositoryInterface
         return $this
         ->model
         ->select(
+            'slots.id',
+            'slots.name',
             'bookings.slot_id     AS booking_slot_id', 
             'bookings.date        AS booking_slot_date',
             'closed_slots.slot_id AS closed_slot_id',
@@ -64,7 +67,7 @@ class SlotRepository implements RepositoryInterface
      * Close a ssllot for the given date
      */
     public function close(int $slotId, CarbonInterface $date) : int
-    {
+    {dd(7);
         $closed = $this
         ->model
         ->firstOrCreate(['slot_id' => $slotId, 'date' => $date]);

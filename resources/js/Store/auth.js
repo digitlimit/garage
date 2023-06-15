@@ -57,9 +57,17 @@ export const useAuth = defineStore(storeId, () => {
             if(userData.id) {
                 this.user     = userData;
                 this.loggedIn = true;
-                Router.push({ name: 'admin.dashboard' });
+                Router.push({ name: 'dashboard.index' });
             }
         });
+    }
+
+    async function logoutLocal()
+    {
+        this.user     = null;
+        this.loggedIn = false;
+
+        Router.push({ name: 'landing.index' })
     }
 
     async function logout() 
@@ -68,10 +76,7 @@ export const useAuth = defineStore(storeId, () => {
             .post('/auth/logout', {}, () => {
                 // log user out
                 this.loading = false;
-                this.user     = null;
-                this.loggedIn = false;
-
-                Router.push({ name: 'landing.index' })
+                this.logoutLocal();
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
@@ -88,6 +93,7 @@ export const useAuth = defineStore(storeId, () => {
         user,
         loggedIn,
         login,
+        logoutLocal,
         logout,
         reset
     }

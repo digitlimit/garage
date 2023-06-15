@@ -67,17 +67,26 @@ class Booking extends Model
      */
     public function scopeForDate(Builder $query, CarbonInterface $date) : void
     {
-        $query
-        ->where('bookings.date', $date);
+        $query->where('bookings.date', $date);
     }
 
     /**
-     * Scope a query to fetch bookings with related vehicle and client.
+     * Scope a query to fetch bookings with related vehicle, client and slot.
      */
     public function scopeList(Builder $query) : void 
     {
         $query
-        ->with('vehicle:id,make,model')
-        ->with('client:id,name,phone,email');
+        ->join('vehicles', 'bookings.vehicle_id', '=', 'vehicles.id')
+        ->join('clients',  'bookings.client_id',  '=', 'clients.id')
+        ->join('slots',    'bookings.slot_id',    '=', 'slots.id')
+        ->select(
+            'bookings.id',
+            'bookings.date',
+            'vehicles.make',
+            'vehicles.model',
+            'clients.name',
+            'clients.email',
+            'slots.name AS slot'
+        );
     }
 }

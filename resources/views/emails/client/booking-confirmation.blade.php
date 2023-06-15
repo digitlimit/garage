@@ -6,8 +6,7 @@
 </x-mail::panel>
 
 <x-mail::table>
-| Vehicle Make  | {{$vehicle->getMake()}}  |
-| Vehicle Model | {{$vehicle->getModel()}} |
+    | Date   | {{$booking->date}}   |
 </x-mail::table>
 
 Thanks,<br>

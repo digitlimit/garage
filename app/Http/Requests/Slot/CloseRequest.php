@@ -22,8 +22,8 @@ class CloseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'slot_id' => ['required', 'integer', 'exists:slots,id'],
-            'date'    => ['required', 'date:"Y-m-d"', 'after:yesterday'],
+            'slot' => ['nullable', 'integer', 'exists:slots,id'],
+            'date' => ['required', 'date_format:Y-m-d', 'after:yesterday'],
         ];
     }
 }

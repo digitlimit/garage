@@ -3,44 +3,32 @@
 namespace App\Mail\Client;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use App\Values\{Client, Vehicle};
-use DateTime;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Repositories\Contracts\BookingRepository;
 
 class BookingConfirmation extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    readonly public Client   $client;
-    readonly public Vehicle  $vehicle;
-    readonly public DateTime $date;
+    public $booking;
+
+     /**
+     * Create a new message instance.
+     */
+    public function __construct(
+        readonly private BookingRepository $bookingRepository
+    ){}
 
     /**
-     * Set client
+     * Setup booking props
      */
-    public function setClient(Client $client) : void 
+    public function setUp(int $bookingId) : void 
     {
-        $this->client = $client;
-    }
-
-    /**
-     * Set vehicle
-     */
-    public function setVehicle(Vehicle $vehicle) : void 
-    {
-        $this->vehicle = $vehicle;
-    }
-
-    /**
-     * Set Booking Date
-     */
-    public function setBookingDate(DateTime $date) : void 
-    {
-        $this->date = $date;
+        $this->booking = $this->bookingRepository->find($bookingId);
     }
 
     /**

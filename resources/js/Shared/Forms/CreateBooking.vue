@@ -23,10 +23,17 @@
         slot: null
     });
 
-    const options = ref([]);
+    const slots = ref([]);
 
     onMounted(async () => {
-        options.value = await slotStore.options();
+        // fetch slots for select menu
+        const options = await slot.slots();
+
+        options.forEach((slot, index) => {
+            options[index] = {label: slot.name, value: slot.id}
+        });
+        
+        slots.value = options;
     });
 
     // create booking
@@ -41,6 +48,10 @@
         <div v-if="bookingStore.success" 
             class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
             <span class="font-medium">Success!</span> {{ bookingStore.success }}
+        </div>
+        <div v-if="bookingStore.error" 
+            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+            <span class="font-medium">Opps!</span> {{ bookingStore.error }}
         </div>
 
         <div class="flex flex-wrap -mx-3 mb-6">
@@ -66,7 +77,7 @@
 
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <SelectInput v-model="booking.slot" :error="bookingStore.errors.slot" :options="options" label="Slot" />
+                <SelectInput v-model="booking.slot" :error="bookingStore.errors.slot" :options="slots" label="Slot" />
             </div>
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <DateInput v-model="booking.date" :error="bookingStore.errors.date" type="text" label="Date" />

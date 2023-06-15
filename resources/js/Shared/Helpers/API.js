@@ -1,6 +1,8 @@
 import axios  from 'axios';
 import helper from './Helper';
 
+import { useAuth } from '@/Store/auth';
+
 axios.defaults.baseURL = helper.apiBaseUrl();
 
 axios.interceptors.response.use( function (response) {
@@ -25,6 +27,11 @@ function (error)
 
     case 404:
       message = 'Resource not found'
+      break;
+
+    case 401:
+      const auth = useAuth();
+      auth.logoutLocal();
       break;
   }
 

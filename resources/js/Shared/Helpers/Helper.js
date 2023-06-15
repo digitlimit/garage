@@ -9,26 +9,6 @@ export default {
         return window.location.origin;
     },
 
-    isUrl(string) {
-        let url;
-        try {
-        url = new URL(string);
-        } catch (_) {
-        return false;
-        }
-        return url.protocol === 'http:' || url.protocol === 'https:';
-    },
-
-    sortArray(data, orderBy, orderDirection) {
-        return data.sort((first, second) => {
-        let selector = 1;
-        if (orderDirection === 'desc') selector = -1;
-        if (first[orderBy] < second[orderBy]) return -1 * selector;
-        if (first[orderBy] > second[orderBy]) return 1 * selector;
-        return 0;
-        });
-    },
-
     errors(errors) {
         let newErrors = {};
         for(let input in errors){
@@ -43,5 +23,9 @@ export default {
             data = res.data.data ? res.data.data : res.data;
         }
         return data;
+    },
+
+    dateYmd(date) {
+        return date.toISOString().split('T')[0];
     }
 }

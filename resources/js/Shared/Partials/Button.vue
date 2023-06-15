@@ -1,12 +1,3 @@
-<template>
-    <button 
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
-        :type="type" 
-    >
-        {{ label }} <SpinnerIcon v-if="spin" class="ml-3" />
-    </button>
-</template>
-
 <script setup>
     import SpinnerIcon from '@/Shared/Icons/Spinner.vue';
 
@@ -34,3 +25,11 @@
         },
     });
 </script>
+<template>
+    <button 
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" 
+        :type="type" 
+    >
+        {{ label }} <SpinnerIcon v-if="spin" class="ml-3" />
+    </button>
+</template>

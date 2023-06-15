@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia'
 import API from '@/Shared/Helpers/API';
+import Helper from '../Shared/Helpers/Helper';
 
 const storeId = 'booking';
 
@@ -16,6 +17,8 @@ export const useBooking = defineStore(storeId, () => {
     async function createBooking(booking) 
     {
         const params = booking.value;
+
+        params.date = Helper.dateYmd(params.date);
 
         return await API
             .post('/bookings', params, () => {
