@@ -4,6 +4,7 @@
     import { useSlot }      from '@/Store/slot';
 
     import SubmitButton from '@/Shared/Partials/Button.vue';
+    import Alert        from '@/Shared/Partials/Alert.vue';
     import DateInput    from '@/Shared/Fields/DateInput.vue';
     import SelectInput  from '@/Shared/Fields/SelectInput.vue';
   
@@ -48,14 +49,7 @@
 <template>
     <form class="m-3">
 
-        <div v-if="slot.success" 
-            class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <span class="font-medium">Success!</span> {{ slot.success }}
-        </div>
-        <div v-if="slot.error" 
-            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-            <span class="font-medium">Opps!</span> {{ slot.error }}
-        </div>
+        <Alert :error="slot.error" :success="slot.success" />
 
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">

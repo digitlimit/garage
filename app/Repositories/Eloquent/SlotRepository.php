@@ -30,25 +30,6 @@ class SlotRepository implements RepositoryInterface
         ->model
         ->all($columns);
     }
-    
-    /**
-     * Fetch all the closed slots from today
-     */
-    public function closedFromToday() : mixed
-    {
-        return $this
-        ->model
-        ->select(
-            'slots.id',
-            'slots.name',
-            'bookings.slot_id     AS booking_slot_id', 
-            'bookings.date        AS booking_slot_date',
-            'closed_slots.slot_id AS closed_slot_id',
-            'closed_slots.date    AS closed_slot_date'
-        )
-        ->asFromDate($this->carbon->now())
-        ->get();
-    }
 
     /**
      * Check if a given date is available
@@ -64,33 +45,20 @@ class SlotRepository implements RepositoryInterface
     }
 
     /**
-     * Close a ssllot for the given date
+     * Fetch all unavailable slots from today
      */
-    public function close(int $slotId, CarbonInterface $date) : int
-    {dd(7);
-        $closed = $this
-        ->model
-        ->firstOrCreate(['slot_id' => $slotId, 'date' => $date]);
-
-        return $closed->id;
-    }
-
-    /**
-     * Open a closed slot for the give date
-     */
-    public function open(int $slotId, CarbonInterface $date) : bool
+    public function bookedFromToday() : mixed 
     {
-        $closed = $this
+        $bookedSlots = $this
         ->model
-        ->where('slot_id', $slotId)
-        ->whereDate(['date' => $date])
-        ->first();
+        ->select(
+            'slots.id',
+            'slots.name',
+            'bookings.date'
+        )
+        ->bookedAsFromDate($this->carbon->now())
+        ->get();
 
-        if($closed) {
-            $closed->delete();
-            return true;
-        }
-
-        return false;
+        return $bookedSlots;
     }
 }

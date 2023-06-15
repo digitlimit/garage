@@ -14,7 +14,7 @@ export const useBooking = defineStore(storeId, () => {
     let success  = ref('');
     let errors   = ref([]);
 
-    async function createBooking(booking) 
+    async function create(booking) 
     {
         const params = booking.value;
 
@@ -52,7 +52,7 @@ export const useBooking = defineStore(storeId, () => {
         loading,
         error,
         success,
-        createBooking,
+        create,
         list
     }
 });

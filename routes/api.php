@@ -27,6 +27,7 @@ Route::controller(SlotController::class)
 ->name('slots.')
 ->group(function () {
     Route::get('/',            'list')->name('list');
+    Route::get('booked-slots', 'BookedSlots')->name('booked-slots');
     Route::get('closed-slots', 'closedSlots')->name('closed-slots');
     Route::get('closed-dates', 'closedDates')->name('closed-dates');    
 });

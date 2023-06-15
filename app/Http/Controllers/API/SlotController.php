@@ -9,6 +9,7 @@ use App\Http\Requests\Slot\OpenRequest;
 use App\Http\Requests\Slot\CloseRequest;
 use App\Repositories\Contracts\SlotRepository;
 use App\Repositories\Contracts\ClosedDateRepository;
+use App\Repositories\Contracts\ClosedSlotRepository;
 
 class SlotController extends BaseController
 {
@@ -16,6 +17,7 @@ class SlotController extends BaseController
         readonly private LogHelper $log,
         readonly private SlotRepository $slot,
         readonly private ClosedDateRepository $closedDate,
+        readonly private ClosedSlotRepository $closedSlot,
         readonly private ResponseHelper $response,
         readonly private Carbon $carbon
     ){}
@@ -33,15 +35,27 @@ class SlotController extends BaseController
     }
 
     /**
+     * Fetch all the booked (unavailable) slots as from today
+     */
+    public function bookedSlots()
+    {
+        $slots = $this
+            ->slot
+            ->bookedFromToday();
+
+        return $this->response->ok($slots);
+    }
+
+    /**
      * Fetch a list of closed slots as from current date.
      */
     public function closedSlots()
     {
-        $dates = $this
-            ->slot
+        $slots = $this
+            ->closedSlot
             ->closedFromToday();
 
-        return $this->response->ok($dates);
+        return $this->response->ok($slots);
     }
 
     /**
@@ -68,7 +82,7 @@ class SlotController extends BaseController
         try {
             //@todo create an interface
             if($slotId && $date) {
-                $this->slot->close($slotId, $date);
+                $this->closedSlot->close($slotId, $date);
             } else {
                 $this->closedDate->close($date);
             }    
@@ -90,7 +104,7 @@ class SlotController extends BaseController
         try {
             //@todo create an interface
             if($slotId && $date) {
-                $this->slot->open($slotId, $date);
+                $this->closedSlot->open($slotId, $date);
             } else {
                 $this->closedDate->open($date);
             }    

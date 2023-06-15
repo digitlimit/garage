@@ -4,10 +4,17 @@
 
   import DashboardLayout  from '@/Layouts/Dashboard.vue';
   import PageTitle        from '@/Shared/Partials/PageTitle.vue';
+  import TableSlot        from '@/Shared/Tables/TableSlot.vue';
 
   const slot        = useSlot();
+  const bookedSlots = ref([]);
   const closedSlots = ref([]);
   const closedDates = ref([]);
+
+  onMounted( async () => { 
+    // fetch booked slots
+    bookedSlots.value = await slot.bookedSlots();
+  });
 
   onMounted( async () => { 
     // fetch closed slots
@@ -23,63 +30,33 @@
 <template>
   <DashboardLayout>
     <PageTitle title="Blocked Slots" subtitle="Here is a list of blocked slots" />
+
     <section class="w-full"> 
-        <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
-        <div class="px-6 py-5 font-bold border-b border-gray-100">List of blocked slot and date</div>
+      <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
+      <div class="px-6 py-5 font-bold border-b border-gray-100">Blocked Dates</div>
         <div class="p-4 flex-grow">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                      <th scope="col" class="px-6 py-3">Name</th>
-                      <th scope="col" class="px-6 py-3">Date</th>
-                      <th scope="col" class="px-6 py-3">Action</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr 
-                    v-for="(closedSlot, index) in closedSlots"
-                    :key="index"
-                    class="bg-white  dark:bg-gray-800  hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    <template v-if="closedSlot.booking_slot_id">
-                      <td class="px-6 py-4">{{ closedSlot.name }}</td>
-                      <td class="px-6 py-4">{{ closedSlot.booking_slot_date }}</td>
-                      <td class="px-6 py-4">Booked</td>
-                    </template>
-                    <template v-else-if="closedSlot.closed_slot_id">
-                      <td class="px-6 py-4">{{ closedSlot.name }}</td>
-                      <td class="px-6 py-4">{{ closedSlot.closed_slot_date }}</td>
-                      <td class="px-6 py-4">Closed</td>
-                    </template>
-                  </tr>
-              </tbody>
-          </table>
+          <TableSlot :slots="closedDates" />
         </div>
-        </div>
+      </div>
     </section>
 
     <section class="w-full"> 
-        <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
-        <div class="px-6 py-5 font-bold border-b border-gray-100">List of blocked date</div>
+      <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
+      <div class="px-6 py-5 font-bold border-b border-gray-100">Blocked Slots</div>
         <div class="p-4 flex-grow">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-              <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                      <th scope="col" class="px-6 py-3">Date</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr 
-                      v-for="(closedDate, index) in closedDates"
-                      :key="index"
-                      class="bg-white  dark:bg-gray-800  hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    <td class="px-6 py-4">{{ closedDate.closed_date }}</td>
-                  </tr>
-              </tbody>
-          </table>
+          <TableSlot :slots="closedSlots" />
         </div>
-        </div>
+      </div>
     </section>
+
+    <section class="w-full"> 
+      <div class="flex flex-col md:col-span-2 md:row-span-2 bg-white shadow rounded-lg">
+      <div class="px-6 py-5 font-bold border-b border-gray-100">Booked Slots</div>
+        <div class="p-4 flex-grow">
+          <TableSlot :slots="bookedSlots" />
+        </div>
+      </div>
+    </section>
+    
   </DashboardLayout>
 </template>

@@ -117,17 +117,15 @@ class Slot extends Model
     }
 
     /**
-     * Fetch all the slots that closed as from today
+     * Fetch all the booked slots as from date
+     * These the slots that are not available as from today
      */
-    public function scopeAsFromDate(
+    public function scopeBookedAsFromDate(
         Builder         $query,
         CarbonInterface $date
     ) : void {
-
         $query
         ->leftJoin('bookings', 'slots.id', '=', 'bookings.slot_id')
-        ->leftJoin('closed_slots', 'slots.id', '=', 'closed_slots.slot_id')
-        ->whereDate('bookings.date',       '>=', $date)
-        ->orWhereDate('closed_slots.date', '>=', $date);
+        ->whereDate('bookings.date',       '>=', $date);
     }
 }

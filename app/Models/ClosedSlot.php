@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ClosedSlot extends Model
@@ -27,5 +29,17 @@ class ClosedSlot extends Model
      */
     public function slot() : BelongsTo {
         return $this->belongsTo(Slot::class);
+    }
+
+    /**
+     * Fetch all the dates that closed as from the given date
+     */
+    public function scopeAsFromDate(
+        Builder         $query,
+        CarbonInterface $date
+    ) : void {
+        $query
+        ->join('slots', 'closed_slots.slot_id', '=', 'slots.id')
+        ->whereDate('closed_slots.date', '>=', $date);
     }
 }

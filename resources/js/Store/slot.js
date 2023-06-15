@@ -36,6 +36,29 @@ export const useSlot = defineStore(storeId, () => {
     }
 
     /**
+     * Get booked slots
+     * 
+     * @param {*} slot 
+     * @returns 
+     */
+     async function bookedSlots() 
+     {
+         this.loading = true;
+ 
+         const slots = await API
+             .get('/slots/closed-slots', {}, () => {
+                 this.loading = false;
+             }, ({ message, errors }) => {
+                 this.loading = false;
+                 this.error   = message;
+                 this.errors  = errors;
+             });
+ 
+         return slots ? slots : [];
+    }
+
+
+    /**
      * Get closed slots
      * 
      * @param {*} slot 
@@ -136,9 +159,10 @@ export const useSlot = defineStore(storeId, () => {
         error,
         success,
         slots,
-        closeSlot,
-        openSlot,
+        bookedSlots,
         closedSlots,
-        closedDates
+        closedDates,
+        closeSlot,
+        openSlot
     }
 });

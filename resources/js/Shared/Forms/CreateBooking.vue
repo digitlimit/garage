@@ -4,6 +4,7 @@
     import { useBooking } from "@/Store/booking";
     import { useSlot }    from "@/Store/slot";
 
+    import Alert        from '@/Shared/Partials/Alert.vue';
     import SubmitButton from '@/Shared/Partials/Button.vue';
     import TextInput    from '@/Shared/Fields/TextInput.vue';
     import DateInput    from '@/Shared/Fields/DateInput.vue';
@@ -38,21 +39,14 @@
 
     // create booking
     const onSubmit = async () => {
-        bookingStore.createBooking(booking);
+        bookingStore.create(booking);
     };
 
 </script>
 <template>
     <form class="m-3">
 
-        <div v-if="bookingStore.success" 
-            class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
-            <span class="font-medium">Success!</span> {{ bookingStore.success }}
-        </div>
-        <div v-if="bookingStore.error" 
-            class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-red-400" role="alert">
-            <span class="font-medium">Opps!</span> {{ bookingStore.error }}
-        </div>
+        <Alert :error="bookingStore.error" :success="bookingStore.success" />
 
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">

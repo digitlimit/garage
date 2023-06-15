@@ -2,18 +2,18 @@
 
 namespace App\Repositories\Eloquent;
 
-use App\Models\ClosedDate;
+use App\Models\ClosedSlot;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
-use App\Repositories\Contracts\ClosedDateRepository as RepositoryInterface;
+use App\Repositories\Contracts\ClosedSlotRepository as RepositoryInterface;
 
-class ClosedDateRepository implements RepositoryInterface
+class ClosedSlotRepository implements RepositoryInterface
 {
     public function __construct(
         /**
-         * An instance of closed date model
+         * An instance of closed slot model
          */
-        readonly private ClosedDate $model,
+        readonly private ClosedSlot $model,
 
         /**
          * An instace of Carbon
@@ -22,36 +22,41 @@ class ClosedDateRepository implements RepositoryInterface
     ){}
 
     /**
-     * Fetch all closed dates from today
+     * Fetch all closed slots from today
      */
     public function closedFromToday() : mixed 
     {
         return $this
         ->model
-        ->select('closed_dates.date')
+        ->select(
+            'slots.id',
+            'slots.name',
+            'closed_slots.date'
+        )
         ->asFromDate($this->carbon->now())
         ->get();
     }
 
-    /**
-     * Close/Block a date
+   /**
+     * Close a ssllot for the given date
      */
-    public function close(CarbonInterface $date) : int
+    public function close(int $slotId, CarbonInterface $date) : int
     {
         $closed = $this
         ->model
-        ->firstOrCreate(['date' => $date]);
+        ->firstOrCreate(['slot_id' => $slotId, 'date' => $date]);
 
         return $closed->id;
     }
 
     /**
-     * Open a Closed/Blocked date
+     * Open a closed slot for the give date
      */
-    public function open(CarbonInterface $date) : bool
+    public function open(int $slotId, CarbonInterface $date) : bool
     {
         $closed = $this
         ->model
+        ->where('slot_id', $slotId)
         ->whereDate(['date' => $date])
         ->first();
 
