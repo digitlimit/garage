@@ -1,5 +1,6 @@
 import axios  from 'axios';
 import helper from './Helper';
+import router from "@/routes";
 
 import { useAuth } from '@/Store/auth';
 
@@ -11,12 +12,15 @@ axios.interceptors.response.use( function (response) {
 },
 
 function (error)
-{ console.log(error);
+{ 
   const { response } = error;
   const { data }     = response;
 
   let errors  = {};
   let message = '';
+  
+  // auth store
+  const auth = useAuth();
 
   switch(response.status) 
   {
@@ -30,8 +34,8 @@ function (error)
       break;
 
     case 401:
-      const auth = useAuth();
-      auth.logoutLocal();
+      auth.flush();
+      router.push({'name': 'auth.login'});
       break;
   }
 

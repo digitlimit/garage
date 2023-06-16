@@ -32,10 +32,10 @@
         <Alert :error="auth.error" :success="auth.success" />
         
         <div>
-            <TextInput v-model="creds.email" :error="auth.errors.email" type="email" label="E-mail address" />
+            <TextInput v-model="creds.email" :error="auth.errors?.email" type="email" label="E-mail address" />
         </div>
         <div>
-            <TextInput v-model="creds.password" :error="auth.errors.password" type="password" label="Your Password" />
+            <TextInput v-model="creds.password" :error="auth.errors?.password" type="password" label="Your Password" />
         </div>
 
         <div class="flex justify-between items-center">

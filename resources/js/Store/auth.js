@@ -1,7 +1,7 @@
 import { ref } from 'vue';
 import { defineStore } from 'pinia';
 
-import Router from "@/routes";
+import router from "@/routes";
 import API    from '@/Shared/Helpers/API';
 import Helper from '@/Shared/Helpers/Helper';
 
@@ -27,10 +27,25 @@ export const useAuth = defineStore(storeId, () => {
         success.value  = '';
     }
 
+    /**
+     * Check if user has any of the roles in the array
+     * @param {*} roles 
+     */
+    function middleware(middlewares)
+    {
+        let role = 'guest';
+
+        const userData = this.user;
+
+        if(userData && this.loggedIn) {
+            role = userData.is_admin ? 'admin' : 'user';
+        }
+
+        return middlewares.includes(role);
+    }
+
     async function login(creds) 
     {
-        // this.reset();
-
         const params = creds.value;
         const axios  = API.axios();
 
@@ -57,17 +72,16 @@ export const useAuth = defineStore(storeId, () => {
             if(userData.id) {
                 this.user     = userData;
                 this.loggedIn = true;
-                Router.push({ name: 'dashboard.index' });
+                router.push({ name: 'dashboard.index' });
             }
         });
     }
 
-    async function logoutLocal()
+    async function flush()
     {
+        reset();
         this.user     = null;
         this.loggedIn = false;
-
-        Router.push({ name: 'landing.index' })
     }
 
     async function logout() 
@@ -76,7 +90,7 @@ export const useAuth = defineStore(storeId, () => {
             .post('/auth/logout', {}, () => {
                 // log user out
                 this.loading = false;
-                this.logoutLocal();
+                this.flush();
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
@@ -93,9 +107,10 @@ export const useAuth = defineStore(storeId, () => {
         user,
         loggedIn,
         login,
-        logoutLocal,
         logout,
-        reset
+        flush,
+        reset,
+        middleware
     }
 
 }, {persist: {

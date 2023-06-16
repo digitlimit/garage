@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('closed_slots', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('slot_id');
+            $table->unsignedBigInteger('slot_id')->index();
             $table->date('date');
             $table->timestamps();
         });

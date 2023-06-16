@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('closed_dates', function (Blueprint $table) {
             $table->id();
-            $table->date('date');
+            $table->date('date')->index();
             $table->timestamps();
         });
     }
