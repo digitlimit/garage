@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Values;
 
 use App\Traits\ValueHelper;
@@ -8,21 +9,22 @@ readonly class Vehicle
     use ValueHelper;
 
     private string $make;
+
     private string $model;
 
     public function __construct(string $make, string $model)
     {
         $this->validateMake($make);
         $this->validateModel($model);
-        
-        $this->make  = $make;
+
+        $this->make = $make;
         $this->model = $model;
     }
 
     /**
      * Get vehicle make
      */
-    public function getMake() : string 
+    public function getMake(): string
     {
         return $this->make;
     }
@@ -30,32 +32,32 @@ readonly class Vehicle
     /**
      * Get vehicle model
      */
-    public function getModel() : string 
+    public function getModel(): string
     {
         return $this->model;
     }
 
     /**
      * Validate vehicle make
-     * 
+     *
      * @throws \App\Exceptions\ValueException
      */
-    protected function validateMake(string $make) : void
+    protected function validateMake(string $make): void
     {
-        if(empty($make)) {
-            $this->fail("Vehicle make is required");
+        if (empty($make)) {
+            $this->fail('Vehicle make is required');
         }
     }
 
     /**
      * Validate vehicle model
-     * 
+     *
      * @throws \App\Exceptions\ValueException
      */
-    protected function validateModel(string $model) : void
+    protected function validateModel(string $model): void
     {
-        if(empty($model)) {
-            $this->fail("Vehicle model is required");
+        if (empty($model)) {
+            $this->fail('Vehicle model is required');
         }
     }
 }

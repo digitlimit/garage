@@ -12,32 +12,32 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(
-            \App\Repositories\Contracts\BookingRepository::class, 
+            \App\Repositories\Contracts\BookingRepository::class,
             \App\Repositories\Eloquent\BookingRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\ClientRepository::class, 
+            \App\Repositories\Contracts\ClientRepository::class,
             \App\Repositories\Eloquent\ClientRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\VehicleRepository::class, 
+            \App\Repositories\Contracts\VehicleRepository::class,
             \App\Repositories\Eloquent\VehicleRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\SlotRepository::class, 
+            \App\Repositories\Contracts\SlotRepository::class,
             \App\Repositories\Eloquent\SlotRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\ClosedDateRepository::class, 
+            \App\Repositories\Contracts\ClosedDateRepository::class,
             \App\Repositories\Eloquent\ClosedDateRepository::class
         );
 
         $this->app->bind(
-            \App\Repositories\Contracts\ClosedSlotRepository::class, 
+            \App\Repositories\Contracts\ClosedSlotRepository::class,
             \App\Repositories\Eloquent\ClosedSlotRepository::class
         );
     }

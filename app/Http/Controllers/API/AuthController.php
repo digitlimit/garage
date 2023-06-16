@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Helpers\LogHelper;
-use Illuminate\Http\Request;
 use App\Helpers\ResponseHelper;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Contracts\Auth\Factory;
 use App\Http\Requests\Auth\LoginRequest;
+use Illuminate\Contracts\Auth\Factory;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class AuthController extends BaseController
 {
@@ -26,7 +26,8 @@ class AuthController extends BaseController
          * Logger instance
          */
         readonly private LogHelper $log
-    ) {}
+    ) {
+    }
 
     /**
      * Fetch the auth user
@@ -41,12 +42,14 @@ class AuthController extends BaseController
      */
     public function login(LoginRequest $request): JsonResponse
     {
-        try{
+        try {
             $request->authenticate();
             $request->session()->regenerate();
+
             return $this->response->ok($request->user());
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->log->info($e->getMessage());
+
             return $this->response->server();
         }
     }
@@ -60,9 +63,11 @@ class AuthController extends BaseController
             $this->auth->guard('web')->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
+
             return $this->response->noContent();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->log->info($e->getMessage());
+
             return $this->response->server();
         }
     }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Traits;
 
 use App\Exceptions\ValueException;
@@ -7,10 +8,10 @@ trait ValueHelper
 {
     /**
      * Throw an exception
-     * 
+     *
      * @throws
      */
-    protected function fail(string $message) : ValueException
+    protected function fail(string $message): ValueException
     {
         throw new ValueException($message);
     }
@@ -18,8 +19,8 @@ trait ValueHelper
     /**
      * Check if value is valid ID
      */
-    protected function isValidId($value) : bool
+    protected function isValidId($value): bool
     {
-        return is_integer($value) && $value > 0;
+        return is_int($value) && $value > 0;
     }
 }

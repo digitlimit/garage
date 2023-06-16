@@ -6,9 +6,9 @@ use Carbon\CarbonInterface;
 
 interface ClosedDateRepository
 {
-    public function closedFromToday() : mixed;
+    public function closedFromToday(): mixed;
 
-    public function close(CarbonInterface $date) : int;
+    public function close(CarbonInterface $date): int;
 
-    public function open(CarbonInterface $date) : bool;
+    public function open(CarbonInterface $date): bool;
 }

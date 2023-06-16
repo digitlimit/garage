@@ -6,9 +6,9 @@ use Carbon\CarbonInterface;
 
 interface ClosedSlotRepository
 {
-    public function closedFromToday() : mixed;
+    public function closedFromToday(): mixed;
 
-    public function close(int $slotId, CarbonInterface $date) : int;
+    public function close(int $slotId, CarbonInterface $date): int;
 
-    public function open(int $slotId, CarbonInterface $date) : bool;
+    public function open(int $slotId, CarbonInterface $date): bool;
 }

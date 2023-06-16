@@ -16,7 +16,6 @@ class Vehicle extends Model
      */
     protected $fillable = [
         'make',
-        'model'
+        'model',
     ];
-
 }

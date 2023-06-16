@@ -2,11 +2,11 @@
 
 namespace App\Repositories\Eloquent;
 
-use Carbon\CarbonInterface;
-use App\Values\BookingSorting;
 use App\Models\Booking as Model;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Repositories\Contracts\BookingRepository as RepositoryInterface;
+use App\Values\BookingSorting;
+use Carbon\CarbonInterface;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class BookingRepository implements RepositoryInterface
 {
@@ -15,12 +15,13 @@ class BookingRepository implements RepositoryInterface
          * An instance of the booking eloquent model
          */
         private Model $model
-    ){}
+    ) {
+    }
 
     /**
      * Fetch a booking by ID
      */
-    public function findWithRelated(int $bookingId) : mixed
+    public function findWithRelated(int $bookingId): mixed
     {
         return $this
             ->model
@@ -30,26 +31,26 @@ class BookingRepository implements RepositoryInterface
             ->first($bookingId);
     }
 
-   /**
+    /**
      * Create new booking
-     * 
-     * @param int      $clientId  Client ID
-     * @param int      $vehicleId Vehicle ID
-     * @param CarbonInterface; $date The booking date value object 
+     *
+     * @param  int  $clientId  Client ID
+     * @param  int  $vehicleId Vehicle ID
+     * @param CarbonInterface; $date The booking date value object
      */
     public function create(
-        int $slotId, 
-        int $clientId, 
-        int $vehicleId, 
+        int $slotId,
+        int $clientId,
+        int $vehicleId,
         CarbonInterface $date
-    ) : int {
+    ): int {
         $booking = $this
             ->model
             ->create([
-                'client_id'  => $clientId,
+                'client_id' => $clientId,
                 'vehicle_id' => $vehicleId,
-                'slot_id'    => $slotId,
-                'date'       => $date
+                'slot_id' => $slotId,
+                'date' => $date,
             ]);
 
         return $booking->id;
@@ -57,40 +58,40 @@ class BookingRepository implements RepositoryInterface
 
     /**
      * Fetch a paginated collection of upcoming bookings.
-     * 
-     * @param BookingSorting $sort    Booking sorting value object
-     * @param int            $perPage The number of records per page, default 15
+     *
+     * @param  BookingSorting  $sort    Booking sorting value object
+     * @param  int  $perPage The number of records per page, default 15
      */
     public function list(
-        BookingSorting  $sort,
-        int             $perPage=15
+        BookingSorting $sort,
+        int $perPage = 15
     ): LengthAwarePaginator {
 
         return $this->model
-        ->query()
-        ->list()
-        ->orderBy($sort->getColumn(), $sort->getDirection())
-        ->paginate($perPage);
+            ->query()
+            ->list()
+            ->orderBy($sort->getColumn(), $sort->getDirection())
+            ->paginate($perPage);
     }
 
     /**
      * Filter booking by date
-     * 
-     * @param CarbonInterface $date    The date to filter to
-     * @param BookingSorting  $sort    Booking sorting value object
-     * @param int             $perPage The number of records per page, default 15
+     *
+     * @param  CarbonInterface  $date    The date to filter to
+     * @param  BookingSorting  $sort    Booking sorting value object
+     * @param  int  $perPage The number of records per page, default 15
      */
     public function filterByDate(
         CarbonInterface $date,
-        BookingSorting  $sort,
-        int             $perPage=15
+        BookingSorting $sort,
+        int $perPage = 15
     ): LengthAwarePaginator {
 
         return $this->model
-        ->query()
-        ->list()
-        ->when($date, fn($query) => $query->whereDate('bookings.date', $date))
-        ->orderBy($sort->getColumn(), $sort->getDirection())
-        ->paginate($perPage);
+            ->query()
+            ->list()
+            ->when($date, fn ($query) => $query->whereDate('bookings.date', $date))
+            ->orderBy($sort->getColumn(), $sort->getDirection())
+            ->paginate($perPage);
     }
 }

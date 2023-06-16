@@ -8,8 +8,8 @@ interface ClientRepository
 {
     /**
      * Find the given client or create, if not exists
-     * 
-     * @param Client $client The client value object
+     *
+     * @param  Client  $client The client value object
      */
-    public function firstOrCreate(Client $client) : int;
+    public function firstOrCreate(Client $client): int;
 }

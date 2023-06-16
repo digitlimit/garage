@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Values;
 
 use App\Traits\ValueHelper;
@@ -6,7 +7,7 @@ use App\Traits\ValueHelper;
 readonly class BookingSorting
 {
     use ValueHelper;
-  
+
     /**
      * Minimum record per page
      */
@@ -22,7 +23,7 @@ readonly class BookingSorting
      */
     const COLUMNS = [
         'id',
-        'date'
+        'date',
     ];
 
     /**
@@ -30,7 +31,7 @@ readonly class BookingSorting
      */
     const DIRECTIONS = [
         'asc',
-        'desc'
+        'desc',
     ];
 
     /**
@@ -42,13 +43,13 @@ readonly class BookingSorting
      * Booking ordering direction
      */
     private string $direction;
-   
+
     public function __construct(string $column, string $direction)
     {
         $this->validateColumn($column);
         $this->validateDirection($direction);
 
-        $this->column    = $column;
+        $this->column = $column;
         $this->direction = $direction;
     }
 
@@ -70,30 +71,30 @@ readonly class BookingSorting
 
     /**
      * Validate booking ordering direction
-     * 
+     *
      * @throws \App\Exceptions\ValueException
      */
-    protected function validateDirection(string $direction) : void
+    protected function validateDirection(string $direction): void
     {
-        if(!in_array($direction, self::DIRECTIONS)) {
+        if (! in_array($direction, self::DIRECTIONS)) {
             $this->fail(
                 'Invalid booking ordering direction. Available: '
-                . implode(',', self::DIRECTIONS)
+                .implode(',', self::DIRECTIONS)
             );
         }
     }
 
-     /**
+    /**
      * Validate booking ordering column
-     * 
+     *
      * @throws \App\Exceptions\ValueException
      */
-    protected function validateColumn(string $column) : void
+    protected function validateColumn(string $column): void
     {
-        if(!in_array($column, self::COLUMNS)) {
+        if (! in_array($column, self::COLUMNS)) {
             $this->fail(
-                'Invalid booking ordering column. Available: ' 
-                . implode(',', self::COLUMNS)
+                'Invalid booking ordering column. Available: '
+                .implode(',', self::COLUMNS)
             );
         }
     }

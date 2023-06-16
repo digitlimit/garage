@@ -1,11 +1,11 @@
 <?php
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use App\Models\Booking;
+use App\Models\Slot;
 use App\Models\Client;
 use App\Models\Vehicle;
-use App\Models\Slot;
+use App\Models\Booking;
 use Illuminate\Support\Carbon;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
 
@@ -26,9 +26,9 @@ it('can create booking with model', function ()
 
     $this->assertDatabaseHas('bookings', $inputs);
 
-})->group('booking', 'booking-model');
+})->group('model', 'booking-model', 'booking-model-create');
 
-it('can can return booking with scopes', function () 
+it('can fetch booking with scopes', function () 
 {
     $booking1 = Booking::factory()->create();
     $booking2 = Booking::factory()->create();
@@ -41,9 +41,16 @@ it('can can return booking with scopes', function ()
     $lists = Booking::list()->get();
     expect($lists)->toHaveCount(2);
 
-    expect($lists[1])
-        ->toMatchObject([
-            'id' => $booking2->id,
+    expect($lists[1]->toArray())
+        ->toMatchArray([
+            "id"    => $booking2->id,
+            "date"  => $booking2->date->format('Y-m-d'),
+            "make"  => $booking2->vehicle->make,
+            "model" => $booking2->vehicle->model,
+            "name"  => $booking2->client->name,
+            "email" => $booking2->client->email,
+            "phone" => $booking2->client->phone,
+            "slot"  => $booking2->slot->name,
         ]);
 
-})->group('booking', 'booking-model-scope');
+})->group('model', 'booking-model', 'booking-model-scope');

@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\ClosedSlot;
+use App\Repositories\Contracts\ClosedSlotRepository as RepositoryInterface;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
-use App\Repositories\Contracts\ClosedSlotRepository as RepositoryInterface;
 
 class ClosedSlotRepository implements RepositoryInterface
 {
@@ -19,38 +19,39 @@ class ClosedSlotRepository implements RepositoryInterface
          * An instace of Carbon
          */
         readonly private Carbon $carbon
-    ){}
+    ) {
+    }
 
     /**
      * Fetch all closed slots from today
      */
-    public function closedFromToday() : mixed 
+    public function closedFromToday(): mixed
     {
         return $this
-        ->model
-        ->select(
-            'slots.id',
-            'slots.name',
-            'closed_slots.date'
-        )
-        ->asFromDate($this->carbon->now())
-        ->get();
+            ->model
+            ->select(
+                'slots.id',
+                'slots.name',
+                'closed_slots.date'
+            )
+            ->asFromDate($this->carbon->now())
+            ->get();
     }
 
-   /**
+    /**
      * Close a slot for the given date
      */
-    public function close(int $slotId, CarbonInterface $date) : int
+    public function close(int $slotId, CarbonInterface $date): int
     {
         $closed = $this->model->closedFor($slotId, $date)->first();
 
-        if(!empty($closed)) {
+        if (! empty($closed)) {
             return $closed->id;
         }
-        
+
         $closed = $this
-        ->model
-        ->create(['slot_id' => $slotId, 'date' => $date]);
+            ->model
+            ->create(['slot_id' => $slotId, 'date' => $date]);
 
         return $closed->id;
     }
@@ -58,12 +59,13 @@ class ClosedSlotRepository implements RepositoryInterface
     /**
      * Open a closed slot for the give date
      */
-    public function open(int $slotId, CarbonInterface $date) : bool
+    public function open(int $slotId, CarbonInterface $date): bool
     {
         $closed = $this->model->closedFor($slotId, $date)->first();
 
-        if($closed) {
+        if ($closed) {
             $closed->delete();
+
             return true;
         }
 

@@ -2,28 +2,26 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
-use Illuminate\Validation\ValidationException;
+use App\Helpers\ResponseHelper;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\RecordsNotFoundException;
-use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
-use Illuminate\Contracts\Container\Container ;
-use App\Exceptions\PolicyException;
-use App\Helpers\ResponseHelper;
+use Throwable;
 
 class Handler extends ExceptionHandler
 {
     /**
      * Create a new exception handler instance.
      *
-     * @param  \Illuminate\Contracts\Container\Container  $container
      * @return void
      */
     public function __construct(
-        Container $container, 
+        Container $container,
         readonly private ResponseHelper $response
     ) {
         parent::__construct($container);
@@ -53,7 +51,6 @@ class Handler extends ExceptionHandler
     /**
      * Create a response object from the given validation exception.
      *
-     * @param  \Illuminate\Validation\ValidationException  $e
      * @param  \Illuminate\Http\Request  $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -72,7 +69,6 @@ class Handler extends ExceptionHandler
      * Convert an authentication exception into a response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Illuminate\Auth\AuthenticationException  $exception
      * @return \Symfony\Component\HttpFoundation\Response
      */
     protected function unauthenticated($request, AuthenticationException $exception)
@@ -84,7 +80,6 @@ class Handler extends ExceptionHandler
      * Render an exception into an HTTP response.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Throwable  $e
      * @return \Symfony\Component\HttpFoundation\Response
      *
      * @throws \Throwable
@@ -92,12 +87,11 @@ class Handler extends ExceptionHandler
     public function render($request, Throwable $e)
     {
         return match (true) {
-            $e instanceof ModelNotFoundException   => $this->response->notFound(),
-            $e instanceof AuthenticationException  => $this->response->unauthenticated(),
+            $e instanceof ModelNotFoundException => $this->response->notFound(),
+            $e instanceof AuthenticationException => $this->response->unauthenticated(),
             $e instanceof RecordsNotFoundException => $this->response->notFound('Record not found'),
-            $e instanceof AuthorizationException   => $this->response->denied(),
+            $e instanceof AuthorizationException => $this->response->denied(),
             $e instanceof MethodNotAllowedHttpException => $this->response->methodNotSupported(),
-            $e instanceof PolicyException          => $this->response->denied($e->getMessage()),
 
             default => parent::render($request, $e)
         };

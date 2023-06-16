@@ -14,7 +14,7 @@ class Phone implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (!preg_match('/^([0-9\s\-\+\(\)]*)$/', $value)) {
+        if (! preg_match('/^([0-9\s\-\+\(\)]*)$/', $value)) {
             $fail('The :attribute must be a phone number.');
         }
     }

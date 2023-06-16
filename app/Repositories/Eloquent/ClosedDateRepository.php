@@ -3,9 +3,9 @@
 namespace App\Repositories\Eloquent;
 
 use App\Models\ClosedDate;
+use App\Repositories\Contracts\ClosedDateRepository as RepositoryInterface;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
-use App\Repositories\Contracts\ClosedDateRepository as RepositoryInterface;
 
 class ClosedDateRepository implements RepositoryInterface
 {
@@ -19,34 +19,35 @@ class ClosedDateRepository implements RepositoryInterface
          * An instace of Carbon
          */
         readonly private Carbon $carbon
-    ){}
+    ) {
+    }
 
     /**
      * Fetch all closed dates from today
      */
-    public function closedFromToday() : mixed 
+    public function closedFromToday(): mixed
     {
         return $this
-        ->model
-        ->select('closed_dates.date')
-        ->asFromDate($this->carbon->now())
-        ->get();
+            ->model
+            ->select('closed_dates.date')
+            ->asFromDate($this->carbon->now())
+            ->get();
     }
 
     /**
      * Close/Block a date
      */
-    public function close(CarbonInterface $date) : int
+    public function close(CarbonInterface $date): int
     {
         $closed = $this->model->whereDate('date', $date)->first();
 
-        if(!empty($closed)) {
+        if (! empty($closed)) {
             return $closed->id;
         }
-  
+
         $closed = $this
-        ->model
-        ->create(['date' => $date]);
+            ->model
+            ->create(['date' => $date]);
 
         return $closed->id;
     }
@@ -54,12 +55,13 @@ class ClosedDateRepository implements RepositoryInterface
     /**
      * Open a Closed/Blocked date
      */
-    public function open(CarbonInterface $date) : bool
+    public function open(CarbonInterface $date): bool
     {
         $closed = $this->model->whereDate('date', $date)->first();
 
-        if($closed) {
+        if ($closed) {
             $closed->delete();
+
             return true;
         }
 

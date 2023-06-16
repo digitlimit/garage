@@ -20,11 +20,14 @@ class BookingFactory extends Factory
      */
     public function definition(): array
     {
+        $day = fake()
+            ->randomElement(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
+
         return [
             'client_id'  => Client::factory(),
             'vehicle_id' => Vehicle::factory(),
             'slot_id'    => Slot::factory(),
-            'date'       => Carbon::now()->next(fake()->dayOfWeek())
+            'date'       => Carbon::now()->next($day)->format('Y-m-d')
         ];
     }
 }

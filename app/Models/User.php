@@ -22,7 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'admin'
+        'admin',
     ];
 
     /**
@@ -41,7 +41,7 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $appends = [
-        'is_admin'
+        'is_admin',
     ];
 
     /**
@@ -52,15 +52,17 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password'          => 'hashed',
+        'admin'             => 'boolean',
+        'is_admin'          => 'boolean'
     ];
 
     /**
-     * Get attribute for admin
+     * Get attribute for admin 
      */
     protected function isAdmin(): Attribute
     {
         return Attribute::make(
-            get: fn () => (bool) $this->admin
+            get: fn ($value) => $this->admin
         );
     }
 }

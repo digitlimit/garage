@@ -2,87 +2,87 @@
 
 namespace App\Services;
 
-use Exception;
-use App\Values\Client;
-use App\Values\Vehicle;
-use Carbon\CarbonInterface;
-use App\Values\BookingSorting;
-use Illuminate\Support\Facades\DB;
-use App\Services\AdminEmailService;
-use App\Services\ClientEmailService;
-use Illuminate\Contracts\Config\Repository;
 use App\Repositories\Contracts\BookingRepository;
 use App\Repositories\Contracts\ClientRepository;
 use App\Repositories\Contracts\VehicleRepository;
+use App\Values\BookingSorting;
+use App\Values\Client;
+use App\Values\Vehicle;
+use Carbon\CarbonInterface;
+use Exception;
+use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\DB;
 
 class BookingService
 {
     public function __construct(
-        readonly private BookingRepository  $booking,
-        readonly private ClientRepository   $client,
-        readonly private VehicleRepository  $vehicle,
+        readonly private BookingRepository $booking,
+        readonly private ClientRepository $client,
+        readonly private VehicleRepository $vehicle,
         readonly private ClientEmailService $clientEmail,
-        readonly private AdminEmailService  $adminEmail,
-        readonly private Repository         $config
-    ){}
+        readonly private AdminEmailService $adminEmail,
+        readonly private Repository $config
+    ) {
+    }
 
     public function find(int $bookingId)
     {
         return $this
-        ->booking
-        ->findWithRelated($bookingId);
+            ->booking
+            ->findWithRelated($bookingId);
     }
 
     /**
      * Fetch list of booking
      */
     public function list(
-        string          $sortColumn, 
-        string          $sortDirection, 
-        int             $perPage,
+        string $sortColumn,
+        string $sortDirection,
+        int $perPage,
         CarbonInterface $date = null
-    ) : LengthAwarePaginator {
+    ): LengthAwarePaginator {
 
         $sorting = new BookingSorting($sortColumn, $sortDirection);
 
-        if($date) {
+        if ($date) {
             return $this
-            ->booking
-            ->filterByDate($date, $sorting, $perPage);
+                ->booking
+                ->filterByDate($date, $sorting, $perPage);
         }
-      
+
         return $this
-        ->booking
-        ->list($sorting, $perPage);
+            ->booking
+            ->list($sorting, $perPage);
     }
 
     /**
      * Create new booking record
-     * 
+     *
      * @return int The booking ID
+     *
      * @throws Exception
      */
     public function addNew(
-        int       $slotId,
-        Client    $client,
-        Vehicle   $vehicle,
+        int $slotId,
+        Client $client,
+        Vehicle $vehicle,
         CarbonInterface $date
-    ) : int|null {
+    ): int|null {
 
         DB::beginTransaction();
 
         // attempt to create a client
         $clientId = $this->client->firstOrCreate($client);
 
-        if(empty($clientId)) {
+        if (empty($clientId)) {
             throw new Exception('Unable to create client');
         }
 
         // attempt to create a vehicle
         $vehicleId = $this->vehicle->firstOrCreate($vehicle);
 
-        if(empty($vehicleId)) {
+        if (empty($vehicleId)) {
             throw new Exception('Unable to create vehicle');
         }
 
@@ -90,11 +90,11 @@ class BookingService
         $bookingId = $this
             ->booking
             ->create($slotId, $clientId, $vehicleId, $date);
-            
+
         DB::commit();
 
         // send emails to client and admin
-        if($bookingId) {
+        if ($bookingId) {
             $booking = $this
                 ->booking
                 ->findWithRelated($bookingId)

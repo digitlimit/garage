@@ -3,11 +3,11 @@
 namespace App\Mail\Admin;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class BookingConfirmation extends Mailable implements ShouldQueue
 {
@@ -17,7 +17,8 @@ class BookingConfirmation extends Mailable implements ShouldQueue
      * Create a new message instance.
      */
     public function __construct(readonly public array $booking)
-    {}
+    {
+    }
 
     /**
      * Get the message envelope.

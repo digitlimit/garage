@@ -3,9 +3,8 @@
 namespace App\Services;
 
 use App\Helpers\SettingHelper;
-use Illuminate\Contracts\Mail\Mailer;
 use App\Mail\Admin\BookingConfirmation;
-use App\Values\Client;
+use Illuminate\Contracts\Mail\Mailer;
 
 class AdminEmailService
 {
@@ -19,12 +18,13 @@ class AdminEmailService
          * Settings
          */
         readonly private SettingHelper $setting,
-    ){}
+    ) {
+    }
 
     /**
      * Send booking confirmation to admin
      */
-    public function sendBookingConfirmation(array $booking) : void 
+    public function sendBookingConfirmation(array $booking): void
     {
         $this->mailer
             ->to($this->setting->adminEmail())
