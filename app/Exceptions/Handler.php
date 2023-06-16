@@ -11,6 +11,7 @@ use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Auth\Access\AuthorizationException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Illuminate\Contracts\Container\Container ;
+use App\Exceptions\PolicyException;
 use App\Helpers\ResponseHelper;
 
 class Handler extends ExceptionHandler
@@ -96,6 +97,7 @@ class Handler extends ExceptionHandler
             $e instanceof RecordsNotFoundException => $this->response->notFound('Record not found'),
             $e instanceof AuthorizationException   => $this->response->denied(),
             $e instanceof MethodNotAllowedHttpException => $this->response->methodNotSupported(),
+            $e instanceof PolicyException          => $this->response->denied($e->getMessage()),
 
             default => parent::render($request, $e)
         };

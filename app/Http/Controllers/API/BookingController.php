@@ -22,18 +22,6 @@ class BookingController extends BaseController
     ){}
 
     /**
-     * View a booking.
-     */
-    public function view(int $bookingId)
-    {
-        $booking = $this
-        ->booking
-        ->find($bookingId);
-
-        return $this->response->ok($booking);
-    }
-
-    /**
      * Fetch a listing a bookings.
      */
     public function list(ListRequest $request)

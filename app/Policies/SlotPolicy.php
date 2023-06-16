@@ -2,33 +2,31 @@
 
 namespace App\Policies;
 
-use App\Models\Slot;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
-class SlotPolicy
+class SlotPolicy extends BasePolicy
 {
-    public function __construct(
-        readonly private Response $response
-    ){}
-
     /**
      * Determine whether the user can close a slot.
+     * 
+     * @throws \App\Exceptions\PolicyException;
      */
-    public function close(User $user, Slot $slot): Response
+    public function close(User $user) : bool
     {
         return $user->admin
-        ? $this->response->allow()
-        : $this->response->deny('You do not have access this slot.');
+        ? $this->allow()
+        : $this->deny('You do not have close access this slot.');
     }
 
     /**
      * Determine whether the user can open a closed slot
+     * 
+     * @throws \App\Exceptions\PolicyException;
      */
-    public function open(User $user, Slot $slot): Response
+    public function open(User $user) : bool
     {
         return $user->admin
-        ? $this->response->allow()
-        : $this->response->deny('You do not have access this slot.');
+        ? $this->allow()
+        : $this->deny('You do not have open access this slot.');
     }
 }

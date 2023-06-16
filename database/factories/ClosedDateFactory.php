@@ -3,12 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use App\Models\Slot;
+use Illuminate\Support\Carbon;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ClosedDates>
  */
-class ClosedDatesFactory extends Factory
+class ClosedDateFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,7 +18,7 @@ class ClosedDatesFactory extends Factory
     public function definition(): array
     {
         return [
-            'date' => fake()->date()
+            'date' => Carbon::now()->next(fake()->dayOfWeek())
         ];
     }
 }

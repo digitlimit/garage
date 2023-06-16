@@ -50,7 +50,7 @@ class SlotController extends BaseController
      * Fetch a list of closed slots as from current date.
      */
     public function closedSlots()
-    {
+    {info(request()->user());
         $slots = $this
             ->closedSlot
             ->closedFromToday();

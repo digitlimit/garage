@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\BookingController;
 use App\Http\Controllers\API\SlotController;
+use App\Models\Booking;
+use App\Models\Slot;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +31,7 @@ Route::controller(SlotController::class)
     Route::get('/',            'list')->name('list');
     Route::get('booked-slots', 'BookedSlots')->name('booked-slots');
     Route::get('closed-slots', 'closedSlots')->name('closed-slots');
-    Route::get('closed-dates', 'closedDates')->name('closed-dates');    
+    Route::get('closed-dates', 'closedDates')->name('closed-dates');  
 });
 
 #--------------------------------------------------------------------------
@@ -50,16 +52,15 @@ Route::middleware('auth:sanctum')
     ->prefix('bookings')
     ->name('bookings.')
     ->group(function () {
-        Route::get('/',           'list')->name('list'); //->can('list', 'booking');
-        Route::get('/{booking}',  'view')->name('view'); //->can('view', 'booking');
+        Route::get('/', 'list')->name('list')->can('list', Booking::class);
     });
 
     Route::controller(SlotController::class)
     ->prefix('slots')
     ->name('slots.')
     ->group(function () {
-        Route::post('/close', 'closeSlot')->name('close'); //->can('close', 'slot');
-        Route::post('/open', 'openSlot')->name('open'); //->can('open',    'slot');
+        Route::post('/close', 'closeSlot')->name('close')->can('close', Slot::class);
+        Route::post('/open', 'openSlot')->name('open')->can('open', Slot::class);
     });
 
 });
