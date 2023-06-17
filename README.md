@@ -62,6 +62,7 @@ sail artisan test
 The application uses Mailpit for demo purpose.
 This can be accessed here: http://localhost:8025/
 
+<img width="1428" alt="image" src="https://github.com/digitlimit/garage/assets/2041419/df9fd868-440c-4603-a3d9-544447d9ecb5">
 
 NB: The .env is committed for demo purpose
 ## API Endpoints
