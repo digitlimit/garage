@@ -34,7 +34,7 @@ class ClosedSlotRepository implements RepositoryInterface
                 'slots.id AS slot_id',
                 'slots.name'
             )
-            ->selectRaw("strftime('%Y-%m-%d', closed_slots.date) AS date")
+            ->selectRaw("DATE(closed_slots.date) AS date")
             ->asFromDate($this->carbon->now())
             ->get();
     }

@@ -57,7 +57,7 @@ class SlotRepository implements RepositoryInterface
                 'slots.id',
                 'slots.name'
             )
-            ->selectRaw("strftime('%Y-%m-%d', bookings.date) AS date")
+            ->selectRaw("DATE(bookings.date) AS date")
             ->bookedAsFromDate($this->carbon->now())
             ->get();
 
