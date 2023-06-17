@@ -97,6 +97,7 @@ NB: The .env is committed for demo purpose
 
 ![image](https://github.com/digitlimit/garage/assets/2041419/5aa7f381-59ac-411e-a73e-af7b72f08a61)
 
+![image](https://github.com/digitlimit/garage/assets/2041419/89d2d693-83ac-44ed-9306-b855a74e1746)
 
 
 
