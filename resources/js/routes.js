@@ -4,7 +4,6 @@ import { useAuth } from './Store/auth';
 import BookingList   from "@/Pages/Booking/List.vue";
 import CreateBooking from "@/Pages/Booking/Create.vue";
 import AuthLogin     from "@/Pages/Auth/Login.vue";
-import ViewBooking   from "@/Pages/Booking/View.vue";
 import ListSlot      from "@/Pages/Slot/List.vue";
 import CloseSlot     from "@/Pages/Slot/Close.vue";
 import Error404      from "@/Pages/Error/404.vue";
@@ -27,12 +26,6 @@ const routes = [
         name: "auth.login",
         component: AuthLogin,
         meta: {middleware: ['guest']}
-    },
-    {
-        path: "/bookings/:booking",
-        name: "bookings.view",
-        component: ViewBooking,
-        meta: {middleware: ['admin']}
     },
     {
         path: "/bookings/create",

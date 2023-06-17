@@ -34,7 +34,7 @@
         <div class="px-6 py-5 font-bold border-b border-gray-100">List of bookings</div>
         <div class="p-4 flex-grow">
 
-            <div v-if="bookings?.length" class="w-full md:w-1/3 mb-6 md:mb-0 pb-3">
+            <div class="w-full md:w-1/3 mb-6 md:mb-0 pb-3">
                 <DateInput @update:modelValue="filterList" v-model="date" type="text" />
             </div>
 
