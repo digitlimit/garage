@@ -2,6 +2,10 @@
 
 This document will serve as a setup guide for this appilcation.
 
+## About this application
+This is a simple Garage booking system built with Laravel and Vue3. It presents a booking form to the customers to book
+a Garage based on slots availability.
+
 ## Requirements
 - PHP ^8.1
 - Laravel 10
@@ -53,7 +57,7 @@ This application uses the Laravel Pest tests
 ```
 sail artisan test
 ```
-
+NB: The .env is committed for demo purpose
 ## API Endpoints
 
 ```
@@ -72,4 +76,28 @@ sail artisan test
   POST      api/slots/open-slot ............................... slots.open.slot › API\SlotController@openSlot
 ```
 
-NB: The .env is committed for demo purpose
+## Screenshots
+
+### Tests
+<img width="1417" alt="image" src="https://github.com/digitlimit/garage/assets/2041419/e868417b-8b74-4037-8fc1-52a71fbe4e84">
+
+### VueApp
+
+<img width="1434" alt="image" src="https://github.com/digitlimit/garage/assets/2041419/2c7cb71c-9b49-4369-b9fd-c15c38eaec67">
+
+<img width="1437" alt="image" src="https://github.com/digitlimit/garage/assets/2041419/403bdb1c-3841-4c21-8062-920dd3b626f5">
+
+![image](https://github.com/digitlimit/garage/assets/2041419/f4dce43b-29d5-4419-b3d4-3074dabeac6e)
+
+![image](https://github.com/digitlimit/garage/assets/2041419/fb597bf1-3bdb-4d1e-96ea-38f3a69f175f)
+
+![image](https://github.com/digitlimit/garage/assets/2041419/d420730a-ff7e-47c9-8f82-f3f99e73d336)
+
+![image](https://github.com/digitlimit/garage/assets/2041419/7a389aaa-2c9c-4e56-afa9-700384d200b9)
+
+![image](https://github.com/digitlimit/garage/assets/2041419/5aa7f381-59ac-411e-a73e-af7b72f08a61)
+
+
+
+
+
