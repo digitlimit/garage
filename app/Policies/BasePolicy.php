@@ -2,14 +2,12 @@
 
 namespace App\Policies;
 
-use App\Exceptions\PolicyException;
-
 class BasePolicy
 {
-     /**
+    /**
      * Simply return false which means to deny access
      */
-    protected function deny() : bool
+    protected function deny(): bool
     {
         return false;
     }

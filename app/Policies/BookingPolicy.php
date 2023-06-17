@@ -12,7 +12,7 @@ class BookingPolicy extends BasePolicy
      * @throws \App\Exceptions\PolicyException;
      */
     public function list(User $user): bool
-    {info($user);
+    {
         return $user->admin
         ? $this->allow()
         : $this->deny();

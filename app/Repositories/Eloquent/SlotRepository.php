@@ -37,12 +37,13 @@ class SlotRepository implements RepositoryInterface
      */
     public function isAvailable(int $slotId, CarbonInterface $date): bool
     {
-        $total = $this
+        $slot = $this
             ->model
+            ->select('slots.id')
             ->availability($slotId, $date)
-            ->count();
+            ->first();
 
-        return ! (bool) $total;
+        return $slot ? false : true;
     }
 
     /**
@@ -54,9 +55,9 @@ class SlotRepository implements RepositoryInterface
             ->model
             ->select(
                 'slots.id',
-                'slots.name',
-                'bookings.date'
+                'slots.name'
             )
+            ->selectRaw("strftime('%Y-%m-%d', bookings.date) AS date")
             ->bookedAsFromDate($this->carbon->now())
             ->get();
 

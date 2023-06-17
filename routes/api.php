@@ -59,8 +59,9 @@ Route::middleware('auth:sanctum')
     ->prefix('slots')
     ->name('slots.')
     ->group(function () {
-        Route::post('/close', 'closeSlot')->name('close')->can('close', Slot::class);
-        Route::post('/open', 'openSlot')->name('open')->can('open', Slot::class);
+        Route::post('/close-slot', 'closeSlot')->name('close.slot')->can('close-slot', Slot::class);
+        Route::post('/open-slot', 'openSlot')->name('open.slot')->can('open-slot', Slot::class);
+        Route::post('/close-date', 'closeDate')->name('close.date')->can('close-date', Slot::class);
+        Route::post('/open-date', 'openDate')->name('open.date')->can('open-date', Slot::class);
     });
-
 });

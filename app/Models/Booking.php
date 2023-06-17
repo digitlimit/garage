@@ -62,7 +62,7 @@ class Booking extends Model
      */
     public function scopeForDate(Builder $query, CarbonInterface $date): void
     {
-        $query->where('bookings.date', $date);
+        $query->whereDate('bookings.date', $date);
     }
 
     /**
@@ -79,7 +79,7 @@ class Booking extends Model
     /**
      * Scope select for related table columns to avoid multiple queries
      */
-    public function scopeSelectedRelated(Builder $query): void
+    public function scopeSelectRelated(Builder $query): void
     {
         $query->select(
             'bookings.id',
@@ -100,6 +100,6 @@ class Booking extends Model
     {
         $query
             ->withRelated()
-            ->selectedRelated();
+            ->selectRelated();
     }
 }

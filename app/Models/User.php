@@ -51,13 +51,13 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'password'          => 'hashed',
-        'admin'             => 'boolean',
-        'is_admin'          => 'boolean'
+        'password' => 'hashed',
+        'admin' => 'boolean',
+        'is_admin' => 'boolean',
     ];
 
     /**
-     * Get attribute for admin 
+     * Get attribute for admin
      */
     protected function isAdmin(): Attribute
     {

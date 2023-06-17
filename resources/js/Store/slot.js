@@ -12,6 +12,7 @@ export const useSlot = defineStore(storeId, () => {
     let loading  = ref(false);
     let complete = ref(false);
     let error    = ref('');
+    let tag      = ref('');
     let success  = ref('');
     let errors   = ref([]);
 
@@ -24,6 +25,7 @@ export const useSlot = defineStore(storeId, () => {
         error.value    = '';
         success.value  = '';
         errors.value   = [];
+        tag.value      = '';
     }
 
     /**
@@ -113,7 +115,6 @@ export const useSlot = defineStore(storeId, () => {
         return dates ? dates : [];
     }
 
-
     /**
      * Close a slot 
      * 
@@ -123,15 +124,20 @@ export const useSlot = defineStore(storeId, () => {
     async function closeSlot({ slot, date }) 
     {
         clear();
-        this.loading = true;
-
+        this.tag = 'close-slot';
         date = date ? Helper.dateYmd(date) : null;
-        const params = {slot, date};
 
+        if(!slot || !date) {
+            this.error = "A slot and a date are required";
+            return;
+        }
+
+        this.loading = true;
+        const params = { slot, date };
         const res = await API
-            .post('/slots/close', params, () => {
+            .post('/slots/close-slot', params, () => {
                 this.loading = false;
-                this.success = 'Slot blocked successfully.';
+                this.success = `The slot was blocked for ${date}`;
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
@@ -142,22 +148,29 @@ export const useSlot = defineStore(storeId, () => {
     }
 
     /**
-     * Open closed slot
+     * Close a Date
      * 
-     * @param {*} slot 
+     * @param {*} param
      * @returns 
      */
-    async function openSlot({slot, date}) 
-    {
+     async function closeDate({ date }) 
+     {
+        clear();
+        this.tag = 'close-date';
+        date = date ? Helper.dateYmd(date) : null;
+
+        if(!date) {
+            this.error = "Please select a date";
+            return;
+        }
+
         this.loading = true;
-        date = Helper.dateYmd(date);
-
-        const params = {slot, date};
-
+        const params = { date };
+        
         const res = await API
-            .post('/slots/open', params, () => {
-                this.success = 'Slot opened successfully.';
+            .post('/slots/close-date', params, () => {
                 this.loading = false;
+                this.success = `The date ${date}, has been blocked for booking`;
             }, ({ message, errors }) => {
                 this.loading = false;
                 this.error   = message;
@@ -166,6 +179,70 @@ export const useSlot = defineStore(storeId, () => {
 
         return res;
     }
+
+    /**
+     * Close a slot 
+     * 
+     * @param {*} param
+     * @returns 
+     */
+    async function openSlot({ slot, date }) 
+    {
+        clear();
+        this.tag = 'open-slot';
+        date = date ? Helper.dateYmd(date) : null;
+
+        if(!slot || !date) {
+            this.error = "A slot and a date are required";
+            return;
+        }
+
+        this.loading = true;
+        const params = { slot, date };
+        const res = await API
+            .post('/slots/open-slot', params, () => {
+                this.loading = false;
+                this.success = `The slot was blocked for ${date}`;
+            }, ({ message, errors }) => {
+                this.loading = false;
+                this.error   = message;
+                this.errors  = errors;
+            });
+
+        return res;
+    }
+ 
+    /**
+     * Open a Date
+     * 
+     * @param {*} param
+     * @returns 
+     */
+    async function openDate({ date }) 
+    {
+        clear();
+        this.tag = 'open-date';
+        date = date ? Helper.dateYmd(date) : null;
+
+        if(!date) {
+            this.error = "Please select a date";
+            return;
+        }
+
+        this.loading = true;
+        const params = { date };
+        const res = await API
+            .post('/slots/open-date', params, () => {
+                this.loading = false;
+                this.success = `The date ${date}, has been reopened for booking`;
+            }, ({ message, errors }) => {
+                this.loading = false;
+                this.error   = message;
+                this.errors  = errors;
+            });
+
+        return res;
+    } 
 
     return { 
         errors,
@@ -178,6 +255,8 @@ export const useSlot = defineStore(storeId, () => {
         closedSlots,
         closedDates,
         closeSlot,
-        openSlot
+        openSlot,
+        closeDate,
+        openDate
     }
 });

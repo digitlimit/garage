@@ -1,5 +1,8 @@
 <?php
 
+use App\Helpers\SettingHelper;
+use App\Helpers\SlotHelper;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -42,7 +45,20 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function slots(): array
 {
-    // ..
+    $setting = app(SettingHelper::class);
+    $helper = new SlotHelper(
+        $setting->get('interval'),
+        $setting->get('open'),
+        $setting->get('close')
+    );
+
+    return $helper->slots();
+}
+
+function day(): string
+{
+    return fake()
+        ->randomElement(['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday']);
 }

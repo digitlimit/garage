@@ -87,7 +87,7 @@ class Slot extends Model
                     ->from('closed_dates')
                     ->whereDate('date', $date)
                     ->limit(1);
-            }, $date->toDateString());
+            }, $date);
     }
 
     /**
@@ -101,13 +101,12 @@ class Slot extends Model
         $query
             ->leftJoin('bookings', 'slots.id', '=', 'bookings.slot_id')
             ->leftJoin('closed_slots', 'slots.id', '=', 'closed_slots.slot_id')
-            ->where('slots.id', $slotId)
             ->where(function (Builder $query) use ($slotId, $date) {
                 $query
                     ->where(fn (Builder $query) => $query->hasBooking($slotId, $date))
-                    ->orWhere(fn (Builder $query) => $query->isClosed($slotId, $date))
-                    ->orWhere(fn (Builder $query) => $query->dateIsClosed($date));
-            });
+                    ->orWhere(fn (Builder $query) => $query->isClosed($slotId, $date));
+            })
+            ->orWhere(fn (Builder $query) => $query->dateIsClosed($date));
     }
 
     /**

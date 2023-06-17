@@ -4,8 +4,10 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\LogHelper;
 use App\Helpers\ResponseHelper;
-use App\Http\Requests\Slot\CloseRequest;
-use App\Http\Requests\Slot\OpenRequest;
+use App\Http\Requests\Slot\CloseDateRequest;
+use App\Http\Requests\Slot\CloseSlotRequest;
+use App\Http\Requests\Slot\OpenDateRequest;
+use App\Http\Requests\Slot\OpenSlotRequest;
 use App\Repositories\Contracts\ClosedDateRepository;
 use App\Repositories\Contracts\ClosedSlotRepository;
 use App\Repositories\Contracts\SlotRepository;
@@ -52,7 +54,6 @@ class SlotController extends BaseController
      */
     public function closedSlots()
     {
-        info(request()->user());
         $slots = $this
             ->closedSlot
             ->closedFromToday();
@@ -73,24 +74,17 @@ class SlotController extends BaseController
     }
 
     /**
-     * Close a slot to prevent client's from picking them
+     * Close a date to prevent clients from picking them
      */
-    public function closeSlot(CloseRequest $request)
+    public function closeDate(CloseDateRequest $request)
     {
-        $slotId = $request->validated('slot');
         $dateString = $request->validated('date');
         $date = $this->carbon->createFromFormat('Y-m-d', $dateString);
 
         try {
-            //@todo create an interface
-            if ($slotId && $date) {
-                $this->closedSlot->close($slotId, $date);
-            } else {
-                $this->closedDate->close($date);
-            }
+            $this->closedDate->close($date);
 
             return $this->response->noContent();
-
         } catch (\Exception $e) {
             $this->log->info($e->getMessage());
 
@@ -99,24 +93,57 @@ class SlotController extends BaseController
     }
 
     /**
-     * Open a closed slot to allow client's to pick them
+     * Close a slot to prevent clients from picking them
      */
-    public function openSlot(OpenRequest $request)
+    public function closeSlot(CloseSlotRequest $request)
     {
         $slotId = $request->validated('slot');
         $dateString = $request->validated('date');
         $date = $this->carbon->createFromFormat('Y-m-d', $dateString);
 
         try {
-            //@todo create an interface
-            if ($slotId && $date) {
-                $this->closedSlot->open($slotId, $date);
-            } else {
-                $this->closedDate->open($date);
-            }
+            $this->closedSlot->close($slotId, $date);
 
             return $this->response->noContent();
+        } catch (\Exception $e) {
+            $this->log->info($e->getMessage());
 
+            return $this->response->server();
+        }
+    }
+
+    /**
+     * Open a closed slot date
+     */
+    public function openDate(OpenDateRequest $request)
+    {
+        $dateString = $request->validated('date');
+        $date = $this->carbon->createFromFormat('Y-m-d', $dateString);
+
+        try {
+            $this->closedDate->open($date);
+
+            return $this->response->noContent();
+        } catch (\Exception $e) {
+            $this->log->info($e->getMessage());
+
+            return $this->response->server();
+        }
+    }
+
+    /**
+     * Open a closed slot
+     */
+    public function openSlot(OpenSlotRequest $request)
+    {
+        $slotId = $request->validated('slot');
+        $dateString = $request->validated('date');
+        $date = $this->carbon->createFromFormat('Y-m-d', $dateString);
+
+        try {
+            $this->closedSlot->open($slotId, $date);
+
+            return $this->response->noContent();
         } catch (\Exception $e) {
             $this->log->info($e->getMessage());
 

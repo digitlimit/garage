@@ -1,25 +1,24 @@
 <?php
 
-use App\Models\Slot;
-use App\Models\Client;
-use App\Models\Vehicle;
 use App\Models\Booking;
-use Illuminate\Support\Carbon;
+use App\Models\Client;
+use App\Models\Slot;
+use App\Models\Vehicle;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Carbon;
 
 uses(RefreshDatabase::class);
 
-it('can create booking with model', function () 
-{
+it('can create booking with model', function () {
     $vehicle = Vehicle::factory()->create();
-    $slot    = Slot::factory()->create();
-    $client  = Client::factory()->create();
+    $slot = Slot::factory()->create();
+    $client = Client::factory()->create();
 
     $inputs = [
-        'client_id'  => $client->id,
+        'client_id' => $client->id,
         'vehicle_id' => $vehicle->id,
-        'slot_id'    => $slot->id,
-        'date'       => Carbon::now()->next(fake()->dayOfWeek())
+        'slot_id' => $slot->id,
+        'date' => Carbon::now()->next(fake()->dayOfWeek()),
     ];
 
     Booking::create($inputs);
@@ -28,8 +27,7 @@ it('can create booking with model', function ()
 
 })->group('model', 'booking-model', 'booking-model-create');
 
-it('can fetch booking with scopes', function () 
-{
+it('can fetch booking with scopes', function () {
     $booking1 = Booking::factory()->create();
     $booking2 = Booking::factory()->create();
 
@@ -43,14 +41,14 @@ it('can fetch booking with scopes', function ()
 
     expect($lists[1]->toArray())
         ->toMatchArray([
-            "id"    => $booking2->id,
-            "date"  => $booking2->date->format('Y-m-d'),
-            "make"  => $booking2->vehicle->make,
-            "model" => $booking2->vehicle->model,
-            "name"  => $booking2->client->name,
-            "email" => $booking2->client->email,
-            "phone" => $booking2->client->phone,
-            "slot"  => $booking2->slot->name,
+            'id' => $booking2->id,
+            'date' => $booking2->date->format('Y-m-d'),
+            'make' => $booking2->vehicle->make,
+            'model' => $booking2->vehicle->model,
+            'name' => $booking2->client->name,
+            'email' => $booking2->client->email,
+            'phone' => $booking2->client->phone,
+            'slot' => $booking2->slot->name,
         ]);
 
 })->group('model', 'booking-model', 'booking-model-scope');

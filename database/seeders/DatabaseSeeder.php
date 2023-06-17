@@ -31,21 +31,21 @@ class DatabaseSeeder extends Seeder
             'admin'    => true
         ]);
 
-        $client = Client::factory()->create([
-           'name'  => 'Emeka Mbah',
-           'phone' => '07366713094',
-           'email' => 'frankemeks77@yahoo.com'
-        ]);
+        // $client = Client::factory()->create([
+        //    'name'  => 'Emeka Mbah',
+        //    'phone' => '07366713094',
+        //    'email' => 'frankemeks77@yahoo.com'
+        // ]);
 
-        $vehicle = Vehicle::factory()->create([
-            'make'  => 'Honda',
-            'model' => '2023 Honda CR-V'
-        ]);
+        // $vehicle = Vehicle::factory()->create([
+        //     'make'  => 'Honda',
+        //     'model' => '2023 Honda CR-V'
+        // ]);
 
-        Booking::factory()->create([
-            'client_id'  => $client->id,
-            'vehicle_id' => $vehicle->id,
-            'slot_id'    => Slot::all(['id'])->random()->id
-        ]);
+        // Booking::factory()->create([
+        //     'client_id'  => $client->id,
+        //     'vehicle_id' => $vehicle->id,
+        //     'slot_id'    => Slot::all(['id'])->random()->id
+        // ]);
     }
 }

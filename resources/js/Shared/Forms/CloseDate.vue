@@ -1,6 +1,6 @@
 
 <script setup>
-    import {ref, onMounted} from "vue"; 
+    import {ref, computed, onMounted} from "vue"; 
     import { useSlot }      from '@/Store/slot';
     import SlotHelper       from '../Helpers/SlotHeper';
 
@@ -12,7 +12,7 @@
     const slot = useSlot();
    
     const slots = ref([]);
-    const form  = ref({ date: null, slot: null});
+    const form  = ref({ date: null });
 
     const disabledDates = ref([]);
 
@@ -28,19 +28,15 @@
     });
 
     const onSubmit = async () => { 
-        const res = await slot.closeSlot(form.value);
+        const res = await slot.closeDate(form.value);
     };
-
 </script>
 <template>
     <form class="m-3">
 
-        <Alert :show="slot.tag =='close-slot'" :error="slot.error" :success="slot.success" />
+        <Alert :show="slot.tag =='close-date'" :error="slot.error" :success="slot.success" />
 
         <div class="flex flex-wrap -mx-3 mb-6">
-            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <SelectInput v-model="form.slot" :error="slot.errors.slot" :options="slots" label="Slot" />
-            </div>
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                 <DateInput 
                     v-model="form.date" 

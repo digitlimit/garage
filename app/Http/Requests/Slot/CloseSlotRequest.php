@@ -4,7 +4,7 @@ namespace App\Http\Requests\Slot;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CloseRequest extends FormRequest
+class CloseSlotRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

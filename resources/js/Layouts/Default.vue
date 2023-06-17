@@ -6,7 +6,9 @@
         <div class="flex-grow text-gray-800">
             <MainHeader>
                 <p class="text-left md:text-center text-lg text-blue-600/100 uppercase font-bold">
-                    Garage
+                    <router-link :to="{ name: 'landing.index'}">
+                        Garage
+                    </router-link>
                 </p>
             </MainHeader>
             <main class="p-6 sm:p-10 space-y-6">

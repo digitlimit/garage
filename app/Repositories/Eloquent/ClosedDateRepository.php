@@ -29,7 +29,8 @@ class ClosedDateRepository implements RepositoryInterface
     {
         return $this
             ->model
-            ->select('closed_dates.date')
+            ->select('closed_dates.id')
+            ->selectRaw("strftime('%Y-%m-%d', closed_dates.date) AS date")
             ->asFromDate($this->carbon->now())
             ->get();
     }

@@ -26,7 +26,7 @@ class BookingRepository implements RepositoryInterface
         return $this
             ->model
             ->withRelated()
-            ->selectedRelated()
+            ->selectRelated()
             ->where('bookings.id', $bookingId)
             ->first($bookingId);
     }

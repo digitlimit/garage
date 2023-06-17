@@ -16,7 +16,7 @@ class BusinessDay
     {
         if ($this->date->isWeekend()) {
             $validator
-                ->errors()->add('date', "We currently do not open on weekends");
+                ->errors()->add('date', 'We currently do not open on weekends');
         }
     }
 }
