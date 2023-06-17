@@ -57,6 +57,12 @@ This application uses the Laravel Pest tests
 ```
 sail artisan test
 ```
+
+## Emails
+The application uses Mailpit for demo purpose.
+This can be accessed here: http://localhost:8025/
+
+
 NB: The .env is committed for demo purpose
 ## API Endpoints
 
