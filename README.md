@@ -57,19 +57,19 @@ sail artisan test
 ## API Endpoints
 
 ```
-  POST      api/auth/login ........................... auth.login › API\AuthController@login
-  POST      api/auth/logout .......................... auth.logout › API\AuthController@logout
-  GET|HEAD  api/auth/user ............................ auth.user › API\AuthController@user
-  POST      api/bookings ............................. bookings.create › API\BookingController@create
-  GET|HEAD  api/bookings ............................. bookings.list › API\BookingController@list
-  GET|HEAD  api/bookings/{booking} ................... bookings.view › API\BookingController@view
-  GET|HEAD  api/slots ................................ slots.list › API\SlotController@list
-  GET|HEAD  api/slots/booked-slots ................... slots.booked-slots › API\SlotController@BookedSlots
-  POST      api/slots/close .......................... slots.close › API\SlotController@closeSlot
-  GET|HEAD  api/slots/closed-dates ................... slots.closed-dates › API\SlotController@closedDates
-  GET|HEAD  api/slots/closed-slots ................... slots.closed-slots › API\SlotController@closedSlots
-  POST      api/slots/open ........................... slots.open › API\SlotController@openSlot
-  GET|HEAD  sanctum/csrf-cookie ...................... sanctum.csrf-cookie › Laravel\Sanctum › CsrfCookieController@show
+  POST      api/auth/login .................................... auth.login › API\AuthController@login
+  POST      api/auth/logout ................................... auth.logout › API\AuthController@logout
+  GET|HEAD  api/auth/user ..................................... auth.user › API\AuthController@user
+  POST      api/bookings ...................................... create › API\BookingController@create
+  GET|HEAD  api/bookings ...................................... bookings.list › API\BookingController@list
+  GET|HEAD  api/slots ......................................... slots.list › API\SlotController@list
+  GET|HEAD  api/slots/booked-slots ............................ slots.booked-slots › API\SlotController@BookedSlots
+  POST      api/slots/close-date .............................. slots.close.date › API\SlotController@closeDate
+  POST      api/slots/close-slot .............................. slots.close.slot › API\SlotController@closeSlot
+  GET|HEAD  api/slots/closed-dates ............................ slots.closed-dates › API\SlotController@closedDates
+  GET|HEAD  api/slots/closed-slots ............................ slots.closed-slots › API\SlotController@closedSlots
+  POST      api/slots/open-date ............................... slots.open.date › API\SlotController@openDate
+  POST      api/slots/open-slot ............................... slots.open.slot › API\SlotController@openSlot
 ```
 
-NB: The .env will be commit for demo purpose
+NB: The .env is committed for demo purpose
