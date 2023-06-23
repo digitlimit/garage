@@ -48,13 +48,11 @@ class CreateRequest extends FormRequest
      */
     public function after(): array
     {
-        $open = $this->setting->get('open');
-        $close = $this->setting->get('close');
         $date = $this->date('date');
         $slotId = $this->slot;
 
         return [
-            new BusinessDay($date, $open, $close),
+            new BusinessDay($date),
             function (Validator $validator) use ($slotId, $date) {
                 if ($this->validated('slot') && $this->validated('date')) {
                     $isAvailable = $this
